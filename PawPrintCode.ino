@@ -10,11 +10,22 @@ void setup() { //runs once at beginning
   pinMode(brakePin, OUTPUT);
 
   Serial.begin(9600); //baud rate 9600
+  Serial.println("<Arduino is ready>");
 
 }
 
 void loop() { //runs constantly
 
+  //Keya do this part
+  if (UserPromptNeeded == TRUE) {
+    //send first question
+    //wait for response
+    //accept response and save to variable
+    //ask other questions and wait for responses
+    //do math with variables to tell them what health needs their pet has
+    UserPromptNeeded = FALSE; //ends this section
+  }
+  
   if (ScalesReady == TRUE) { //poll device Scale
     ScaleValue(); //run scale
     WaterValue(); //run other scale

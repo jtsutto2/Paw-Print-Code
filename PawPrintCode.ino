@@ -5,6 +5,7 @@ void setup() { //runs once at beginning
   int ScalesReady = FALSE;
   int ButtonReady = FALSE;
   int UserPromptNeeded = TRUE;
+  String[] UserQuestions = {"Is your pet a dog or cat?","How much (in pounds) does your pet weigh? Please round to the nearest whole number."}
 
   pinMode(directionPin, OUTPUT);
   pinMode(pwmPin, OUTPUT);
@@ -19,6 +20,7 @@ void loop() { //runs constantly
 
   //Keya do this part
   if (UserPromptNeeded == TRUE) {
+    Serial.println("Please answer all questions by typing your answer and hitting Enter/Return to submit.")
     //send first question
     //wait for response
     //accept response and save to variable

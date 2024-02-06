@@ -4,6 +4,7 @@ void setup() { //runs once at beginning
 
   int ScalesReady = FALSE;
   int ButtonReady = FALSE;
+  int UserPromptNeeded = TRUE;
 
   pinMode(directionPin, OUTPUT);
   pinMode(pwmPin, OUTPUT);

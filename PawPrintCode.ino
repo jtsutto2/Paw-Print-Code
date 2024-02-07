@@ -1,4 +1,5 @@
 #include "PawPrintHeader.h"
+#include "RTC.h"
 
 void setup() { //runs once at beginning
 
@@ -13,6 +14,11 @@ void setup() { //runs once at beginning
 
   Serial.begin(9600); //baud rate 9600
   Serial.println("<Arduino is ready>");
+
+  //real time clock setup
+  RTC.begin();  
+  RTCTime startTime(30, Month::FEBRUARY, 2024, 12, 27, 00, DayOfWeek::WEDNESDAY, SaveLight::SAVING_TIME_ACTIVE);
+  RTC.setTime(startTime);
 
 }
 
@@ -119,9 +125,27 @@ void RunButton(void) {
   analogWrite(pwmPin, 0); //set pwm to 0% (off)
   delay(500); //cooldowm 0.5 seconds
 
+  // Get current time from RTC
+  RTC.getTime(currentTime);
+
+  // Print out date (DD/MM//YYYY)
+  Serial.print(currentTime.getDayOfMonth());
+  Serial.print("/");
+  Serial.print(Month2int(currentTime.getMonth()));
+  Serial.print("/");
+  Serial.print(currentTime.getYear());
+  Serial.print(" - ");
+
+  // Print time (HH/MM/SS)
+  Serial.print(currentTime.getHour());
+  Serial.print(":");
+  Serial.print(currentTime.getMinutes());
+  Serial.print(":");
+  Serial.println(currentTime.getSeconds());
+  
   //take picture
 
-  PictureProcess(); //reconscruct and send picture
+  PictureProcess(); //reconstruct and send picture
 }
 
 void PictureProcess(void) {

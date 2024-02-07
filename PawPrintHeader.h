@@ -1,7 +1,11 @@
+#include "RTC.h"
+
 //values
 #define TRUE 1
 #define FALSE 0
 
+RTCTime currentTime; //current time variable
+  
 //sensor (analog???) pins
 const int FoodPin 9; //analog GPIO pin 9
 const int WaterPin 10; //analog GPIO pin 10

@@ -140,7 +140,7 @@ void PictureProcess(void) {
 }
 
 void AskUserButton(void) {
-  Serial.println("Would you like to run the motor? 1 for yes 2, for no");
+  Serial.println("Would you like to run the motor? 1 for yes, 2 for no");
 
   while (Serial.available() == 0) {
   }

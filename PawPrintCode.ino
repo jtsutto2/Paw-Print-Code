@@ -1,12 +1,8 @@
 #include "PawPrintHeader.h"
-#include "RTC.h"
+#include "mbed.h"
+#include <mbed_mktime.h>
 
 void setup() { //runs once at beginning
-
-  int ScalesReady = FALSE;
-  int ButtonReady = FALSE;
-  int UserPromptNeeded = TRUE;
-  String[] UserQuestions = {"Is your pet a dog or cat?","How much (in pounds) does your pet weigh? Please round to the nearest whole number."}
 
   pinMode(directionPin, OUTPUT);
   pinMode(pwmPin, OUTPUT);
@@ -15,61 +11,57 @@ void setup() { //runs once at beginning
   Serial.begin(9600); //baud rate 9600
   Serial.println("<Arduino is ready>");
 
-  //real time clock setup
-  RTC.begin();  
-  RTCTime startTime(30, Month::FEBRUARY, 2024, 12, 27, 00, DayOfWeek::WEDNESDAY, SaveLight::SAVING_TIME_ACTIVE);
-  RTC.setTime(startTime);
-
+  //RTCset();
 }
 
 void loop() { //runs constantly
 
   //Keya do this part
   if (UserPromptNeeded == TRUE) {
-    Serial.println("Please answer all questions by typing your answer and hitting Enter/Return to submit.")
+    Serial.println("Please answer all questions by typing your answer and hitting Enter/Return to submit.");
     //send first question
     //wait for response
     //accept response and save to variable
     //ask other questions and wait for responses
     //do math with variables to tell them what health needs their pet has
-    UserPromptNeeded = FALSE; //ends this section
+    UserPromptNeeded = 0; //ends this section
   }
   
-  if (ScalesReady == TRUE) { //poll device Scale
-    ScaleValue(); //run scale
-    WaterValue(); //run other scale
+  if (millis() % 2000 == 0) { //poll touch sensor
+      //RunButton(); //dispense food  
   }
 
-  if (ButtonReady == TRUE) { //poll touch sensor
-    RunButton(); //dispense food
+  if (millis() % 3000 == 0) {
+    //WaterValue(); //run water scale
   }
 
-  if (ScalesReady == FALSE) { //wait 2s then let system check scale
-    delay(2000); 
-    ScalesReady = TRUE;
+  if (millis() % 3500 == 0) { //poll device Scale 
+    //ScaleValue(); //run scale
   }
 
-  if (ButtonReady == FALSE) {
-    //do something
-  }
 
 }
 
 void ScaleValue(void) {
-  int ScaleLast, ScaleCurrent, FoodEaten;
+  int ScaleLast, ScaleCurrent, FoodEaten, FoodReset;
   int FoodMax = 9999;
   int FoodUpdate = FALSE;
 
+  
   ScaleLast = analogRead(FoodPin); //read scale
   Serial.println("Food level is being read: ");
   Serial.println(ScaleLast); //output value
+  Serial.println("getLocalTime()"); //print current time
   delay(500); //wait 500ms
   ScaleCurrent = analogRead(FoodPin); //read again
   Serial.println("Food level is being read: ");
   Serial.println(ScaleCurrent); //output value
 
-  if (FoodEaten >= FoodMax) {
-    FoodEaten = 0; //empty amount of food eaten (implies refill of container)
+  if (FoodReset == TRUE) { //if reset command is given
+    FoodEaten = 0; //reset FoodEaten
+  }
+  else if (FoodEaten >= FoodMax) {
+    Serial.println("ERROR: FoodEaten > FoodMax");
   if (ScaleLast != ScaleCurrent) {
     FoodEaten += ScaleCurrent - ScaleLast; //update the amount of Food Eaten
     FoodUpdate = TRUE;
@@ -86,18 +78,22 @@ void ScaleValue(void) {
 }
 
 void WaterValue(void) {
-  int WaterLast, WaterCurrent, WaterDrank;
+  int WaterLast, WaterCurrent, WaterDrank, WaterReset;
   int WaterMax = 9999;
   int WaterUpdate = FALSE;
 
   WaterLast = analogRead(WaterPin); //read water level
   Serial.println("Water level is being read");
+  Serial.println("getLocalTime()"); //print current time
   delay(500); //wait 500ms
   WaterCurrent = analogRead(WaterPin); //read again
   Serial.println("Water level is being read");
 
-  if (WaterDrank >= WaterMax) {
-    WaterDrank = 0; //empty amount of water drank (implies refill of container)
+  if (WaterReset == TRUE) { //if reset command is given
+    WaterDrank = 0; //reset water
+  }
+  else if (WaterDrank >= WaterMax) {
+    Serial.println("ERROR: WaterDrank > WaterMax");
   if (WaterLast != WaterCurrent) {
     WaterDrank += WaterCurrent - WaterLast; //update the amount of water drank
     WaterUpdate = TRUE;
@@ -114,6 +110,9 @@ void WaterValue(void) {
 }
 
 void RunButton(void) {
+  int ButtonPressed;
+
+  if (ButtonPressed == TRUE) {
   //motor control
   digitalWrite(directionPin, HIGH); //set direction to high
   digitalWrite(brakePin, LOW); //release brake
@@ -125,31 +124,52 @@ void RunButton(void) {
   analogWrite(pwmPin, 0); //set pwm to 0% (off)
   delay(500); //cooldowm 0.5 seconds
 
-  // Get current time from RTC
-  RTC.getTime(currentTime);
-
-  // Print out date (DD/MM//YYYY)
-  Serial.print(currentTime.getDayOfMonth());
-  Serial.print("/");
-  Serial.print(Month2int(currentTime.getMonth()));
-  Serial.print("/");
-  Serial.print(currentTime.getYear());
-  Serial.print(" - ");
-
-  // Print time (HH/MM/SS)
-  Serial.print(currentTime.getHour());
-  Serial.print(":");
-  Serial.print(currentTime.getMinutes());
-  Serial.print(":");
-  Serial.println(currentTime.getSeconds());
+  Serial.println("getLocalTime()"); //print current time
   
   //take picture
 
   PictureProcess(); //reconstruct and send picture
+  }
 }
 
 void PictureProcess(void) {
   //code to reconstruct picture
 
   //send serial out
+}
+
+//LOOK INTO BATTERY BACKUP FOR RTC
+void RTCset()  // Set cpu RTC
+{
+  /* FIX THIS LATER
+  // return the time if a valid sync message is received on the serial port.
+  //have this only run once and prompt user for it
+  while(Serial.available() >=  TIME_MSG_LEN){  // time message consists of a header and ten ascii digits
+    char c = Serial.read() ; 
+    Serial.print(c);  
+    if(c == TIME_HEADER) { //check for T at beginning      
+      int pctime = 0;
+      for(int i=0; i < TIME_MSG_LEN -1; i++){   
+        c = Serial.read();          
+        if(c >= '0' && c <= '9') {   
+          pctime = (10 * pctime) + (c - '0') ; // convert digits to a number    
+        }
+  */
+  tm t; //fix this to set to pctime
+  t.tm_sec = (0);            // 0-59
+  t.tm_min = (30);           // 0-59
+  t.tm_hour = (11);          // 0-23
+  t.tm_mday = (13);          // 1-31
+  t.tm_mon = (1);           // 0-11  "0" = Jan, -1
+  t.tm_year = ((24) + 100);  // year since 1900,  current year + 100 + 1900 = correct year
+  set_time(mktime(&t));      // set RTC clock
+    }
+
+ 
+String getLocalTime() {
+  char buffer[32];
+  tm t;
+  _rtc_localtime(time(NULL), &t, RTC_4_YEAR_LEAP_YEAR_SUPPORT);
+  strftime(buffer, 32, "%Y-%m-%d %k:%M:%S", &t);
+  return String(buffer);
 }

@@ -11,7 +11,7 @@ void setup() { //runs once at beginning
   Serial.begin(9600); //baud rate 9600
   Serial.println("<Arduino is ready>");
 
-  //RTCset();
+  RTCset();
 }
 
 void loop() { //runs constantly
@@ -28,6 +28,7 @@ void loop() { //runs constantly
   }
   
   if (millis() % 2000 == 0) { //poll touch sensor
+      //AskUserButton();
       //RunButton(); //dispense food  
   }
 
@@ -136,6 +137,28 @@ void PictureProcess(void) {
   //code to reconstruct picture
 
   //send serial out
+}
+
+void AskUserButton(void) {
+  Serial.println("Would you like to run the motor? 1 for yes 2, for no");
+
+  while (Serial.available() == 0) {
+  }
+
+  int menuChoice = Serial.parseInt();
+
+  switch (menuChoice) {
+    case 1:
+      //run Button
+      RunButton();
+      break;
+
+    case 2:
+      //Do nothing      
+      break;
+    
+    default:
+    break;
 }
 
 //LOOK INTO BATTERY BACKUP FOR RTC

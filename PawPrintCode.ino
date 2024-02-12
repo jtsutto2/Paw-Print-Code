@@ -160,6 +160,7 @@ void AskUserButton(void) {
     default:
     break;
 }
+}
 
 //LOOK INTO BATTERY BACKUP FOR RTC
 void RTCset()  // Set cpu RTC

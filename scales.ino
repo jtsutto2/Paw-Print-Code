@@ -4,13 +4,13 @@
 
 /***************************/
 // Global Variables //
-/***************************/
+//*************************//
 
 int FoodEaten = 0; // Sum of all weight unloaded (food consumed) from food scale
 
 /***************************/
 // Scale-Related Functions //
-/***************************/
+//*************************//
 
 //This is the function called from main for all food-related operations
 void food(void) {

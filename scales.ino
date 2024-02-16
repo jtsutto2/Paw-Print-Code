@@ -2,38 +2,55 @@
 #include "mbed.h"
 #include <mbed_mktime.h>
 
+// Global Variables //
 
-void ScaleValue(void) {
-  int ScaleLast, ScaleCurrent, FoodEaten, FoodReset;
-  int FoodMax = 9999;
-  int FoodUpdate = FALSE;
+int FoodEaten = 0; // Sum of all weight unloaded (food consumed) from food scale
 
+// Scale-Related Functions //
+
+//This is the function called from main for all food-related operations
+void food(void) {
+  int firstReading = readScale();            // Read the initial value of the scale
+  printScale(firstReading);                  // Display reading on console
   
-  ScaleLast = analogRead(FoodPin); //read scale
-  Serial.println("Food level is being read: ");
-  Serial.println(ScaleLast); //output value
-  Serial.println("getLocalTime()"); //print current time
-  delay(500); //wait 500ms
-  ScaleCurrent = analogRead(FoodPin); //read again
-  Serial.println("Food level is being read: ");
-  Serial.println(ScaleCurrent); //output value
+  delay(500);                                // Wait 500ms
+  
+  int secondReading = readScale();           // Read again for the second value
+  printScale(secondReading);                 // Display reading on console
 
-  if (FoodReset == TRUE) { //if reset command is given
-    FoodEaten = 0; //reset FoodEaten
+  if (didPetEat(firstReading, secondReading)) foodUpdate(); // If there is a decrease in scale weight (food was eaten), make necessary updates
+}
+
+// Reads and returns value from scale
+int readScale(void) {
+  return analogRead(FoodPin);                 // Read scale and store value, must make sure of FoodPin 
+}
+
+// Prints the value that was just weighed (value)
+void printScale (int value) {
+  Serial.println("Food level: ");
+  Serial.println(value);                     // Output value
+  Serial.println("getLocalTime()");          // Print current timestamp for troubleshooting purposes
+}
+
+// Did the pet eat?
+bool didPetEat(int first, int second) {
+  if (second > first) {
+      FoodEaten += second - first;    //update the amount of Food Eaten
+      return TRUE;
   }
-  else if (FoodEaten >= FoodMax) {
-    Serial.println("ERROR: FoodEaten > FoodMax");
-  if (ScaleLast != ScaleCurrent) {
-    FoodEaten += ScaleCurrent - ScaleLast; //update the amount of Food Eaten
-    FoodUpdate = TRUE;
-    }
-  }
+  else return FALSE;
+}
+
+void foodUpdate (void) {
+  Serial.println("Your pet has eaten ");
+  Serial.println(FoodEaten); //outputs value of Food Eaten
+  Serial.println("total grams of food.");
+  FoodUpdate = FALSE;
+}
+  
 
   if (FoodUpdate == TRUE) {
-    Serial.println("Your pet has eaten ");
-    Serial.println(FoodEaten); //outputs value of Food Eaten
-    Serial.println("total grams of food.");
-    FoodUpdate = FALSE;
+    
   }
-
 }

@@ -1,5 +1,21 @@
+#include "PawPrintHeader.h"
+
+//GLOBAL VARIABLES
+int FoodEaten;
+int WaterDrank;
+int ButtonState;
+int cooldownTime;
+
 void setup() {
   Serial.begin(9600);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB
+  }
+
+  pinMode(directionPin, OUTPUT);
+  pinMode(pwmPin, OUTPUT);
+  pinMode(brakePin, OUTPUT);
+  
 }
 
 void loop() {

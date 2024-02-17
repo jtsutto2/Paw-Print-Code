@@ -35,8 +35,7 @@ void loop() {
     else {
       Serial.println("Food has been dispensed less than 60 seconds ago."); //triggers if cooldown hasn't been met
     }
-    
-    else { //if button isn't pressed, read scales
+  } else { //if button isn't pressed, read scales
       if((millis() + 200) % 200 < 100) {
         food(); //triggers on 0.2s, 0.4s, etc.
       } 
@@ -44,7 +43,6 @@ void loop() {
         WaterValue(); //triggers on 0.3s, 0.5s, etc.
         }
       }
-    }
 }
 
 void DispenseFood() {

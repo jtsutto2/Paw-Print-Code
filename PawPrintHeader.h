@@ -24,6 +24,7 @@ const int brakePin = 9; //Digital GPIO D9
 
 //function defines
 void ScaleValue(void);
+void food(void);
 void RunButton(void);
 void WaterValue(void);
 void PictureProcess(void);

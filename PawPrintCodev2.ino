@@ -4,7 +4,7 @@
 //GLOBAL VARIABLES
 int FoodEaten, FoodReset;
 int WaterDrank, WaterReset;
-int ButtonState;
+int ButtonState = 0;         // variable for reading the pushbutton status
 int cooldownTime;
 
 //Servo Objects and fields

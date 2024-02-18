@@ -12,11 +12,14 @@ Servo myservo;
 int speed;
 
 void setup() {
-  
+
   Serial.begin(9600);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB
   }
+
+   // initialize the pushbutton pin as an input:
+  pinMode(buttonPin, INPUT);  
 
   myservo.attach(9); //servo connected to pin 9
   myservo.write(90); //90 is stopped
@@ -28,6 +31,10 @@ void setup() {
 
 void loop() {
   
+  ButtonState = digitalRead(buttonPin); //check button
+
+  // check if the pushbutton is pressed.
+  // if it is, the buttonState is LOW:
   if (ButtonState == LOW) { //check for button press
     if (millis() >= cooldownTime) { //if 60s have passed since last food
       DispenseFood(); //dispense function

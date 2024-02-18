@@ -22,6 +22,9 @@ const int directionPin = 12; //Digital GPIO D6
 const int pwmPin = 3; //AREF for PWM
 const int brakePin = 9; //Digital GPIO D9
 
+//other pins
+const int buttonPin = 2;
+
 //function defines
 void ScaleValue(void);
 void food(void);

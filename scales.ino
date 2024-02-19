@@ -102,6 +102,9 @@ bool didPetEat(float first, float second) {
     // Calculate the percentage increase
     float percentageIncrease = ((second - first) / first) * 100.0;
 
+    Serial.print("Difference is: ");
+    Serial.print(second - first);
+
     // Check if the percentage increase exceeds the threshold
     if (percentageIncrease > 10) { //set the threshhold to 5%
         return true;  // Second is significantly larger than first

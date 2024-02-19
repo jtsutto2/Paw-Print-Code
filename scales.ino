@@ -60,7 +60,6 @@ void food(void) {
       secondReadingB = LoadCell_2.getData();
       printScale(secondReadingB);
 
-      newDataReady = 0;
       t = millis();
     }
 

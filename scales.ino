@@ -24,7 +24,7 @@ const int calVal_eepromAdress_1 = 0; // eeprom adress for calibration value load
 const int calVal_eepromAdress_2 = 4; // eeprom adress for calibration value load cell 2 (4 bytes)
 unsigned long t = 0;
 
-int FoodEaten = 0; // Sum of all weight unloaded (food consumed) from food scale
+float FoodEaten = 0; // Sum of all weight unloaded (food consumed) from food scale
 
 /***************************/
 // Scale-Related Functions //
@@ -105,7 +105,7 @@ bool didPetEat(float first, float second) {
 }
 
 // Add to the total amount eaten
-void foodUpdate(int amountEaten) {
+void foodUpdate(float amountEaten) {
   FoodEaten += amountEaten;                  // Update the amount of Food Eaten
   
   Serial.println("Your pet has eaten ");

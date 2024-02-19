@@ -59,3 +59,7 @@ void foodUpdate(int amountEaten) {
 void resetFoodEaten(void) {
   FoodEaten = 0;
 }
+
+void setupEEPROM(void) {
+
+}

@@ -100,16 +100,11 @@ void printScale (float value) {
 
 // Did the pet eat?
 bool didPetEat(float first, float second) {
-  if (second > first) return true;
-  else return false;
-}
-
-bool didPetEat(float first, float second) {
     // Calculate the percentage increase
     float percentageIncrease = ((second - first) / first) * 100.0;
 
     // Check if the percentage increase exceeds the threshold
-    if (percentageIncrease > 5) { //set the threshhold to 5%
+    if (percentageIncrease > 10) { //set the threshhold to 5%
         return true;  // Second is significantly larger than first
     } else {
         return false; // Second is not significantly larger than first

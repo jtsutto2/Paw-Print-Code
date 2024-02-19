@@ -104,6 +104,18 @@ bool didPetEat(float first, float second) {
   else return false;
 }
 
+bool didPetEat(float first, float second) {
+    // Calculate the percentage increase
+    float percentageIncrease = ((second - first) / first) * 100.0;
+
+    // Check if the percentage increase exceeds the threshold
+    if (percentageIncrease > 5) { //set the threshhold to 5%
+        return true;  // Second is significantly larger than first
+    } else {
+        return false; // Second is not significantly larger than first
+    }
+}
+
 // Add to the total amount eaten
 void foodUpdate(float amountEaten) {
   FoodEaten += amountEaten;                  // Update the amount of Food Eaten

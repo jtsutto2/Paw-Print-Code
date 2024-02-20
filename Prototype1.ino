@@ -1,7 +1,7 @@
 #include "PawPrintHeader.h"
 #include <Servo.h>
-#include "mbed.h"
-#include <mbed_mktime.h>
+//#include "mbed.h"
+//#include <mbed_mktime.h>
 #include <HX711_ADC.h>
 #if defined(ESP8266)|| defined(ESP32) || defined(AVR)
 #include <EEPROM.h>
@@ -15,7 +15,6 @@ void printScale (float value);
 /***************************/
 // Global Variables //
 //*************************//
-int FoodEaten, FoodReset;
 int WaterDrank, WaterReset;
 int ButtonState;         // variable for reading the pushbutton status
 float cooldownTime;
@@ -45,7 +44,7 @@ int speed;
 
 void setup() {
   //Load Cell Side
-  Serial.begin(57600); delay(10);
+  Serial.begin(9600); delay(10);
   Serial.println();
   Serial.println("Starting...");
 
@@ -71,10 +70,6 @@ void setup() {
   }
 
 //Motor Side
-  Serial.begin(57600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB
-  }
 
    // initialize the pushbutton pin as an input:
   pinMode(buttonPin, INPUT);
@@ -89,7 +84,6 @@ void setup() {
 }
 
 void loop() {
-  
   ButtonState = digitalRead(buttonPin); //check button
 
   // check if the pushbutton is pressed.
@@ -119,7 +113,6 @@ void DispenseFood() {
   myservo.write(90); //stop servo
 
   cooldownTime = millis()/1000 + 0.5; //set 60 second cooldown
-    
 }
 
 // This is the function called from main for all food-related operations

@@ -1,11 +1,12 @@
-#include "PawPrintHeader.h"
-#include "mbed.h"
-#include <mbed_mktime.h>
+//#include "PawPrintHeader.h"
+//#include "mbed.h"
+//#include <mbed_mktime.h>
 #include <HX711_ADC.h>
 #if defined(ESP8266)|| defined(ESP32) || defined(AVR)
 #include <EEPROM.h>
 #endif
 
+void printScale (float value);
 /***************************/
 // Global Variables //
 //*************************//
@@ -15,6 +16,9 @@ const int HX711_dout_1 = 4; //mcu > HX711 no 1 dout pin
 const int HX711_sck_1 = 5; //mcu > HX711 no 1 sck pin
 const int HX711_dout_2 = 6; //mcu > HX711 no 2 dout pin
 const int HX711_sck_2 = 7; //mcu > HX711 no 2 sck pin
+float firstReadingA, firstReadingB, secondReadingA, secondReadingB;
+
+
 
 //HX711 constructor (dout pin, sck pin)
 HX711_ADC LoadCell_1(HX711_dout_1, HX711_sck_1); //HX711 1
@@ -29,20 +33,52 @@ float FoodEaten = 0; // Sum of all weight unloaded (food consumed) from food sca
 /***************************/
 // Scale-Related Functions //
 //*************************//
+void setup() {
+  Serial.begin(57600); delay(10);
+  Serial.println();
+  Serial.println("Starting...");
+
+  LoadCell_1.begin();
+  //LoadCell.setReverseOutput(); //uncomment to turn a negative output value to positive
+  //float calibrationValue_1; // calibration value (see example file "Calibration.ino")
+  float calibrationValue_1 = 696.0; // uncomment this if you want to set the calibration value in the sketch
+#if defined(ESP8266)|| defined(ESP32)
+  EEPROM.begin(512); // uncomment this if you use ESP8266/ESP32 and want to fetch the calibration value from eeprom
+#endif
+  EEPROM.get(calVal_eepromAdress_1, calibrationValue_1); // uncomment this if you want to fetch the calibration value from eeprom
+
+  unsigned long stabilizingtime = 2000; // preciscion right after power-up can be improved by adding a few seconds of stabilizing time
+  boolean _tare = true; //set this to false if you don't want tare to be performed in the next step
+  LoadCell_1.start(stabilizingtime, _tare);
+  if (LoadCell_1.getTareTimeoutFlag()) {
+    Serial.println("Timeout, check MCU>HX711 wiring and pin designations");
+    while (1);
+  }
+  else {
+    LoadCell_1.setCalFactor(calibrationValue_1); // set calibration value (float)
+    Serial.println("Startup is complete");
+  }
+}
+
+void loop() {
+  food();
+}
+
 
 //This is the function called from main for all food-related operations
 void food(void) {
     static boolean newDataReady = 0;
     const int serialPrintInterval = 0; //increase value to slow down serial print activity    
 
-    float firstReadingA = 0.0;
+    /*float firstReadingA = 0.0;
     float firstReadingB = 0.0;
     float secondReadingA = 0.0;
-    float secondReadingB = 0.0;
+    float secondReadingB = 0.0;*/
 
   // Reading the scales and populating Load Cell A + B:
-    if (millis() > t + serialPrintInterval) { // Only runs at certain time intervals
-      LoadCell_1.update(); // This built-in function updates the value of LoadCell and returns TRUE if value is new
+    
+      LoadCell_1.update(); // This built-in function updates the value of LoadCell_1 and returns TRUE if value is new
+      
       firstReadingA = LoadCell_1.getData(); // This built-in function gets the float value produced by load cell
       printScale(firstReadingA);
 
@@ -61,7 +97,7 @@ void food(void) {
       printScale(secondReadingB);
 
       t = millis();
-    }
+    
 
   // receive command from serial terminal, send 't' to initiate tare operation:
   if (Serial.available() > 0) {
@@ -94,7 +130,7 @@ void printScale (float value) {
   Serial.print("Load_cell output val: ");
   Serial.print(value);
   
-  Serial.println("getLocalTime()");          // Print current timestamp for troubleshooting purposes
+  //Serial.println("getLocalTime()");          // Print current timestamp for troubleshooting purposes
 }
 
 // Did the pet eat?
@@ -102,8 +138,8 @@ bool didPetEat(float first, float second) {
     // Calculate the percentage increase
     float percentageIncrease = ((second - first) / first) * 100.0;
 
-    Serial.print("Difference is: ");
-    Serial.print(second - first);
+    Serial.println("Difference is: ");
+    Serial.println(second - first);
 
     // Check if the percentage increase exceeds the threshold
     if (percentageIncrease > 10) { //set the threshhold to 5%
@@ -117,11 +153,11 @@ bool didPetEat(float first, float second) {
 void foodUpdate(float amountEaten) {
   FoodEaten += amountEaten;                  // Update the amount of Food Eaten
   
-  Serial.println("Your pet has eaten ");
-  Serial.println(FoodEaten);                 // Outputs value of Food Eaten
-  Serial.println("total grams of food.");
+  //Serial.println("Your pet has eaten ");
+  //Serial.println(FoodEaten);                 // Outputs value of Food Eaten
+  //Serial.println("total grams of food.");
 
-  Serial.println("getLocalTime()");          // Print current timestamp for troubleshooting purposes
+  //Serial.println("getLocalTime()");          // Print current timestamp for troubleshooting purposes
 }
 
 // Reset FoodEaten value (probably after the day is over or something)

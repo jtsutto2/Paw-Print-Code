@@ -100,10 +100,7 @@ void loop() {
       if(currentTime >= readingCooldown) {
         food(); //triggers on 0.2s, 0.4s, etc.
       } 
-      else if ((millis()/100 + 2) % 2 >= 1) {
-        //WaterValue(); //triggers on 0.3s, 0.5s, etc.
-        }
-      }
+  }  
 }
 
 void DispenseFood() {
@@ -220,7 +217,7 @@ void resetFoodEaten(void) {
 
 // This function must be called in the setup phase of main file
 void setupLoadCells(void) {
-    Serial.begin(57600); delay(10);
+    Serial.begin(9600); delay(10);
     Serial.println();
     Serial.println("Starting...");
 

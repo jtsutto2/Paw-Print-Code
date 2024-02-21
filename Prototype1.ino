@@ -17,7 +17,7 @@ void printScale (float value);
 //*************************//
 int WaterDrank, WaterReset;
 int ButtonState;         // variable for reading the pushbutton status
-float cooldownTime;
+float cooldownTime, readingCooldown, currentTime;
 
 //pins:
 const int HX711_dout_1 = 4; //mcu > HX711 no 1 dout pin
@@ -96,7 +96,8 @@ void loop() {
       Serial.println("Food has been dispensed less than 60 seconds ago."); //triggers if cooldown hasn't been met
     }
   } else { //if button isn't pressed, read scales
-      if((millis()/100 + 2) % 2 < 1) {
+      currentTime = millis()/1000;
+      if(currentTime >= readingCooldown) {
         food(); //triggers on 0.2s, 0.4s, etc.
       } 
       else if ((millis()/100 + 2) % 2 >= 1) {
@@ -165,6 +166,8 @@ void food(void) {
   if (LoadCell_2.getTareStatus() == true) {
     Serial.println("Tare load cell 2 complete");
   }
+
+  readingCooldown = millis()/1000 + 500;
 
   if (didPetEat(firstReadingA, secondReadingA)) foodUpdate(secondReadingA - firstReadingA); // If there is a decrease in scale weight (food was eaten), make necessary updates
   if (didPetEat(firstReadingB, secondReadingB)) foodUpdate(secondReadingB - firstReadingB); // If there is a decrease in scale weight (food was eaten), make necessary updates

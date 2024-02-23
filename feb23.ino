@@ -9,15 +9,19 @@
 
 void setup() {
     Init_Serial();           // Initialize serial communication
+    delay(500);
     Init_Load_Cells();       // Initialize load cells
+    delay(500);
     Init_Buttons();          // Initialize button
+    delay(500);
     Init_Servo();            // Initialize servo motors
+    delay(500);
 }
 
 void loop() {
     if (checkButton()) {                      // Check if button is pressed
         if (currentTime() >= foodCooldown) {  // Check if dispensing is still on cooldown
-            foodCooldown = cooldown(1000);    // We will dispense, set the cooldown
+            foodCooldown = cooldown(0.5);    // We will dispense, set the cooldown
             dispenseFood();                   // Dispense the food
         }
         // Dispenser is still on cooldown
@@ -25,7 +29,7 @@ void loop() {
     }
     // Currently, scale readings are only performed while button is unpressed
     else if (currentTime() >= readingCooldown) {
-        readingCooldown = cooldown(500);     // Only initiate readings every 500ms
+        readingCooldown = cooldown(0.5);     // Only initiate readings every 500ms
         readScales();                        // Read and update scale values
         foodOperations();                    // Check if pet ate
     }
@@ -36,7 +40,7 @@ void loop() {
 
     // Troubleshooting:
     if (currentTime() >= myCooldown) {
-        myCooldown = cooldown(3000); 
+        myCooldown = cooldown(1); 
 
         Serial.print("Your pet has eaten ");
         Serial.print(foodEaten);                   // Prints value of foodEaten
@@ -68,7 +72,7 @@ void printScale (float value) {
 
 // Did the pet eat? Only returns true for significant scale changes
 bool didPetEat(float first, float second) {
-    if ((((second - first) / first) * 100.0) > 10) { // Check if the percentage increase exceeds the threshold of 10%
+    if ((((second - first) / first) * 100.0) > 50) { // Check if the percentage increase exceeds the threshold of 10%
         flag1 = true;
         return true;                                 // Second is significantly larger than first
     }
@@ -184,14 +188,17 @@ unsigned long cooldown (unsigned long delay) {
 
 // Reads the scales and populates Load Cell A and B
 void readScales(void) {
+
+    Serial.println("hello");
+
     LoadCell_1.update(); // This built-in function updates the value of LoadCell_1 and returns TRUE if value is new
     LoadCell_2.update();
       
     firstReadingA = LoadCell_1.getData(); // This built-in function gets the float value produced by load cell
-    //printScale(firstReadingA);
+    printScale(firstReadingA);
 
     firstReadingB = LoadCell_2.getData();
-    //printScale(firstReadingB);
+    printScale(firstReadingB);
 
     delay(500); // 500ms delay between readings
       

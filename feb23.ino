@@ -64,6 +64,8 @@ void loop() {
         if (isFirstReading) {                        // Alternates between first and second readings every 200ms
             readFoodScale(firstReadingA);            // Populates firstReadingA as initial food reading
             readWaterScale(firstReadingB);           // Populates firstReadingB as initial water reading
+
+            //printScale(firstReadingB);
         }
         else {                                       // This only executes if first readings have already been taken
             readFoodScale(secondReadingA);
@@ -141,8 +143,7 @@ void readFoodScale(float &reading) {
 
 void readWaterScale(float &reading) {
   LoadCell_2.update();
-  int negative = LoadCell_2.getData();
-  reading = 0 - negative; 
+  reading = LoadCell_2.getData();
 }
 
 // Prints the value that was just weighed (value)
@@ -175,7 +176,7 @@ bool didPetEat(float first, float second) {
 
 // Did the pet drink? Only returns true for significant scale changes
 bool didPetDrink(float first, float second) {
-    if ((first > 2) && (second > 2)) {  // We don't want to check whent the scales fluctuate while unused 
+    if ((first > 10) && (second > 10)) {  // We don't want to check whent the scales fluctuate while unused 
       if ((((first - second) / first) * 100.0) > 10) {                    // Check if the percentage increase exceeds the threshold of 10%
           petDrank = true;
           return true;                                                     // Second is significantly larger than first
@@ -187,6 +188,7 @@ bool didPetDrink(float first, float second) {
 
 // Add to the total amount eaten
 void foodUpdate(float amountEaten) {
+  Serial.println(amountEaten);
     foodEaten += amountEaten;          // Add the amount eaten to foodEaten monitor
 }
 
@@ -279,13 +281,13 @@ void setupLoadCells(void) {
     float calibrationValue_1; // calibration value load cell 1
     float calibrationValue_2; // calibration value load cell 2
 
-    calibrationValue_1 = 696.0; // uncomment this if you want to set this value in the sketch
-    calibrationValue_2 = 733.0; // uncomment this if you want to set this value in the sketch
+    calibrationValue_1 = 195.8; // uncomment this if you want to set this value in the sketch
+    calibrationValue_2 = 17.05; // uncomment this if you want to set this value in the sketch
     #if defined(ESP8266) || defined(ESP32)
     EEPROM.begin(512); // uncomment this if you use ESP8266 and want to fetch the value from eeprom
     #endif
-    EEPROM.get(calVal_eepromAdress_1, calibrationValue_1); // uncomment this if you want to fetch the value from eeprom
-    EEPROM.get(calVal_eepromAdress_2, calibrationValue_2); // uncomment this if you want to fetch the value from eeprom
+    //EEPROM.get(calVal_eepromAdress_1, calibrationValue_1); // uncomment this if you want to fetch the value from eeprom
+    //EEPROM.get(calVal_eepromAdress_2, calibrationValue_2); // uncomment this if you want to fetch the value from eeprom
 
     LoadCell_1.begin();
     LoadCell_2.begin();

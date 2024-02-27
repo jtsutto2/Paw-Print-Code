@@ -175,7 +175,7 @@ bool didPetEat(float first, float second) {
 
 // Did the pet drink? Only returns true for significant scale changes
 bool didPetDrink(float first, float second) {
-    if ((first > 10) && (second > 10)) {  // We don't want to check whent the scales fluctuate while unused 
+    if ((first > 2) && (second > 2)) {  // We don't want to check whent the scales fluctuate while unused 
       if ((((first - second) / first) * 100.0) > 10) {                    // Check if the percentage increase exceeds the threshold of 10%
           petDrank = true;
           return true;                                                     // Second is significantly larger than first

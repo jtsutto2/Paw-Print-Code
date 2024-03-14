@@ -165,7 +165,7 @@ void waterOperations(void) {
 // Did the pet eat? Only returns true for significant scale changes
 bool didPetEat(float first, float second) {
   if ((first > 1) && (second > 1)) {  // We don't want to check whent the scales fluctuate while unused 
-    if ((((first - second) / first) * 100.0) > 10) {                    // Check if the percentage increase exceeds the threshold of 10%
+    if ((((first - second) / first) * 100.0) > 5) {                    // Check if the percentage increase exceeds the threshold of 10%
         petAte = true;
         return true;                                                     // Second is significantly larger than first
     }
@@ -177,7 +177,7 @@ bool didPetEat(float first, float second) {
 // Did the pet drink? Only returns true for significant scale changes
 bool didPetDrink(float first, float second) {
     if ((first > 10) && (second > 10)) {  // We don't want to check whent the scales fluctuate while unused 
-      if ((((first - second) / first) * 100.0) > 10) {                    // Check if the percentage increase exceeds the threshold of 10%
+      if (((((first - second) / first) * 100.0) > 10) || ((first - second) >= 5)) {                    // Check if the percentage increase exceeds the threshold of 10%
           petDrank = true;
           return true;                                                     // Second is significantly larger than first
       }
@@ -188,7 +188,7 @@ bool didPetDrink(float first, float second) {
 
 // Add to the total amount eaten
 void foodUpdate(float amountEaten) {
-  Serial.println(amountEaten);
+  //Serial.println(amountEaten);
     foodEaten += amountEaten;          // Add the amount eaten to foodEaten monitor
 }
 

@@ -1,0 +1,23 @@
+Accessing Raspberry Pi remotely:
+
+Step 1: Connecting Pi to Internet
+
+	Method 1: Ethernet cable
+
+	Method 2: Using monitor just once, connect to Wi-Fi
+
+	Method 3: Connect laptop to Pi physically, use command line
+
+
+Step 2: Pi is online
+
+SSH (must be on same network):
+    From Mac Terminal:
+        ssh pawprint@raspberrypi.local
+	Password: pawprint
+
+	hostname -I (to find IP address)
+
+VNC (Remote Desktop):
+    From Real VNC Viewer:
+        Enter the IP address found from SSH / Direct Connection

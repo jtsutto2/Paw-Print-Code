@@ -11,12 +11,12 @@ def main():
 
   print("What is " + petName + "'s target weight?")
   targetWeight = input()
-  dietfactor = petWeight/targetWeight
+  dietfactor = petWeight/targetWeight #returns correction factor in diet relative to target weight
 
   foodGoal = petWeight * dietFactor * 27 #daily food goal adjusted for dietary needs
-  print("Your furry friend needs: " + foodGoal + "g of food")
+  print(petName + " needs: " + foodGoal + "g of food")
   waterGoal = petWeight * 30 #water should be based on current weight not target 
-  print("Your furry friend needs: " + waterGoal + "mL of water")
+  print(petName + " needs: " + waterGoal + "mL of water")
 
   consumptionProgress()
   
@@ -30,14 +30,32 @@ def consumptionProgress():
   print(petName + " has drank " + waterProgress + "% of their daily water goal as of")
   print current_time()
 
+  goalDict = { #creates a dictionary with the date: true/false format
+    'date': 'true/false'
+  }
+
   if foodProgress >= 100:
-    foodGoalMet = 1
+    foodGoalMet = current_time()
+    goalDict[foodGoalMet] = 'true' #adds todays date with value true
+  else:
+    foodGoalMet = current_time()
+    goalDict[foodGoalMet] = 'false' #adds todays date with value false
 
   if waterProgress >= 100:
-    waterGoalMet = 1
+    waterGoalMet = current_time()
+    goalDict[waterGoalMet] = 'true' #adds todays date with value true
+  else:
+    waterGoalMet = current_time()
+    goalDict[waterGoalMet] = 'false' #adds todays date with value false
 
-    
+  print("Would you like to see your goals to date?")
+  yesorno = input()
+  if yesorno.casefold() == 'yes': #not case sensitive
+    print(goalDict) #prints dates and if goal was met or not, will update to graph later
+  else if yesorno.casefold() == 'no':
+    continue
+  
   return
 
 def current_time():
-  return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+  return datetime.now().strftime('%m-%d-%Y %H:%M:%S') #creates string with MM/DD/YY and HR:Min:sec

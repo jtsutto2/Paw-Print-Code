@@ -1,4 +1,5 @@
-import numpy as np
+import datetime
+import matplotlib as mp
 
 def main():
 
@@ -8,27 +9,35 @@ def main():
   print("Please enter " + petName + "'s weight in pounds")
   petWeight = input()
 
-  print("Is your pet underweight, at weight, or overweight. Please enter only one")
-  dietString = input()
-  if dietString.casefold() == 'underweight': #not case sensitive
-    dietFactor = 1.25 #needs more food if underweight
-  else if dietString.casefold() == 'at weight':
-    dietFactor = 1.0 #keep food amount normal
-  else if dietString.casefold() == 'overweight':
-    dietFactor 0.75 #needs less food if overweight
-  else:
-    print("Error: please enter only underweight, at weight, or overweight")
+  print("What is " + petName + "'s target weight?")
+  targetWeight = input()
+  dietfactor = petWeight/targetWeight
 
-  foodGoal = petWeight * dietFactor * 27
+  foodGoal = petWeight * dietFactor * 27 #daily food goal adjusted for dietary needs
   print("Your furry friend needs: " + foodGoal + "g of food")
-  waterGoal = petWeight * dietFactor * 30
+  waterGoal = petWeight * 30 #water should be based on current weight not target 
   print("Your furry friend needs: " + waterGoal + "mL of water")
 
-  
+  consumptionProgress()
   
   return
 
-def consumptionProgress:
+def consumptionProgress():
   foodProgress = (foodEaten / foodGoal) * 100;
   waterProgress = (waterDrank / waterGoal) * 100;
-  print()
+  print(petName + " has eaten " + foodProgress + "% of their daily food goal as of")
+  print current_time()
+  print(petName + " has drank " + waterProgress + "% of their daily water goal as of")
+  print current_time()
+
+  if foodProgress >= 100:
+    foodGoalMet = 1
+
+  if waterProgress >= 100:
+    waterGoalMet = 1
+
+    
+  return
+
+def current_time():
+  return datetime.now().strftime('%Y-%m-%d %H:%M:%S')

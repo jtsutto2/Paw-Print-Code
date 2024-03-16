@@ -18,40 +18,12 @@ void setup() {
     delay(500);
     tareOperations();        // Null or zero out cell data while nothing is on them
     delay(500);
-
-    Serial.println("All components initialized.");
-    Serial.println("Startup is complete.\n");
-
-    Serial.println("Please enter your pet's weight in pounds:");
-    while (1) {
-        // Check if data is available on the serial port
-        if (Serial.available() > 0) {
-            petWeight = Serial.parseFloat();                  // Parse the input as a float
-
-            // Print the received weight for confirmation
-            Serial.print("Received dog weight: ");
-            Serial.print(petWeight);
-            Serial.println(" lb.");
-
-            dailyFoodAmount = howMuchToEat(petWeight);        // Calculate total grams pet should eat per day
-            dailyWaterAmount = howMuchToDrink(petWeight);     // Calculate total grams pet should drink every day
-
-            // Print the calculate daily food amount
-            Serial.print("Your furry friend needs: ");
-            Serial.print(dailyFoodAmount);
-            Serial.print(" grams of food and ");
-            Serial.print(dailyWaterAmount);
-            Serial.println(" milliliters of water per day.\n");
-            break;
-        }
-    }
 }
 
 void loop() {
     // The following detects if button is pressed, and if it is, it will trigger a food dispense
     // There is a cooldown between presses to take effect
     if ((checkButton()) && (currentTime() >= foodCooldown)) {    // Check if button is pressed and cooldown is met
-        dispenseCooldown++;
         dispenseFood();                                          // Dispense the food
         foodCooldown = cooldown(1);                              // We will dispense, set the cooldown
     }
@@ -92,7 +64,6 @@ void loop() {
 
     // The following will frequently print out pet's daily consumption progress
     if (currentTime() >= consumptionCooldown) {
-        consumptionProgress();
 
         Serial.print(1);
         Serial.print(",");
@@ -109,47 +80,15 @@ void loop() {
         Serial.print(",");
         Serial.print(foodEaten);
         Serial.print(",");
-        Serial.print(waterDrank);
-        Serial.print(",");
-        Serial.print(foodProgress);
-        Serial.print(",");
-        Serial.println(waterProgress);
+        Serial.println(waterDrank);
         */
-
-        /* 
-        Serial.print("Your pet has reached ");
-        Serial.print(foodProgress);
-        Serial.print("% of its daily food intake goal and ");
-        Serial.print(waterProgress);
-        Serial.println("% of its daily water intake goal.\n");
-        */
-
-        consumptionCooldown = cooldown(10);
+        consumptionCooldown = cooldown(2);
     }
-
-    // Troubleshooting:
-    /*if (petAte) {
-        Serial.println("A difference in food was detected");
-        Serial.print("Your pet has eaten ");
-        Serial.print(foodEaten);                      // Prints value of foodEaten
-        Serial.println(" total grams of food.\n");
-
-        petAte = false;
-    }
-
-    if (petDrank) {
-        Serial.println("A difference in water was detected");
-        Serial.print("Your pet has drank ");
-        Serial.print(waterDrank);                      // Prints value of waterDrank
-        Serial.println(" total grams of water.\n");
-
-        petDrank = false;
-    }
-    */
 }
 
 // Runs the motors to dispense food
 void dispenseFood(void) {
+    dispenseCount++;
     myservo.write(180);       // Set servo to half-speed, counterclockwise
     delay(2000);              // Run for 2 seconds
     myservo.write(90);        // Stop servo
@@ -208,7 +147,6 @@ bool didPetDrink(float first, float second) {
 
 // Add to the total amount eaten
 void foodUpdate(float amountEaten) {
-  //Serial.println(amountEaten);
     foodEaten += amountEaten;          // Add the amount eaten to foodEaten monitor
 }
 
@@ -270,30 +208,8 @@ void Init_Buttons (void) {
 
 void Init_Serial (void) {
     Serial.begin(9600); delay(10);
-    Serial.println();
-    Serial.println("Starting...");
-}
-
-void Init_Load_Cells (void) {
-    LoadCell_1.begin();
-    //LoadCell.setReverseOutput(); //uncomment to turn a negative output value to positive
-    //float calibrationValue_1; // calibration value (see example file "Calibration.ino")
-    float calibrationValue_1 = 696.0;
-    #if defined(ESP8266)|| defined(ESP32)
-    EEPROM.begin(512); // uncomment this if you use ESP8266/ESP32 and want to fetch the calibration value from eeprom
-    #endif
-    EEPROM.get(calVal_eepromAdress_1, calibrationValue_1); // uncomment this if you want to fetch the calibration value from eeprom
-    unsigned long stabilizingtime = 2000; // preciscion right after power-up can be improved by adding a few seconds of stabilizing time
-    boolean _tare = true; //set this to false if you don't want tare to be performed in the next step
-    LoadCell_1.start(stabilizingtime, _tare);
-    if (LoadCell_1.getTareTimeoutFlag()) {
-        Serial.println("Timeout, check MCU>HX711 wiring and pin designations");
-        while (1);
-    }
-    else {
-        LoadCell_1.setCalFactor(calibrationValue_1); // set calibration value (float)
-        //Serial.println("Startup is complete");
-    }
+    //Serial.println();
+    //Serial.println("Starting...");
 }
 
 // This function must be called in the setup phase of main file
@@ -322,10 +238,10 @@ void setupLoadCells(void) {
         if (!loadcell_2_rdy) loadcell_2_rdy = LoadCell_2.startMultiple(stabilizingtime, _tare);
     }
     if (LoadCell_1.getTareTimeoutFlag()) {
-        Serial.println("Timeout, check MCU>HX711 no.1 wiring and pin designations");
+        //Serial.println("Timeout, check MCU>HX711 no.1 wiring and pin designations");
     }
     if (LoadCell_2.getTareTimeoutFlag()) {
-        Serial.println("Timeout, check MCU>HX711 no.2 wiring and pin designations");
+        //Serial.println("Timeout, check MCU>HX711 no.2 wiring and pin designations");
     }
     LoadCell_1.setCalFactor(calibrationValue_1); // user set calibration value (float)
     LoadCell_2.setCalFactor(calibrationValue_2); // user set calibration value (float)
@@ -351,20 +267,3 @@ void tareOperations (void) {
     //Serial.println("Tare load cell 2 complete");
   }
 }  
-
-// Used to calculate how much food in grams a pet should eat daily based on bodyweight in pounds
-float howMuchToEat(float weight) {
-    // ROUGH APPROXIMATION: A pet should eat around 27grams per 1 pound of bodyweight daily
-    return weight * 27;
-}
-
-// Used to calculate how much water in milliliters a pet should drink daily based on bodyweight in pounds
-float howMuchToDrink(float weight) {
-    // ROUGH APPROXIMATION: A pet should drink around 30milliliters per 1 pound of bodyweight daily
-    return weight * 30;
-}
-
-float consumptionProgress(void) {
-    foodProgress = (foodEaten / dailyFoodAmount) * 100;
-    waterProgress = (waterDrank / dailyFoodAmount) * 100;
-}

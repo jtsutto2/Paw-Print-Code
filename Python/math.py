@@ -9,9 +9,11 @@ def main():
   print("Please enter " + petName + "'s weight in pounds")
   petWeight = input()
 
+  #maybe add an option to manually enter a diet based on vet reccomendation
+
   print("What is " + petName + "'s target weight?")
   targetWeight = input()
-  dietfactor = petWeight/targetWeight #returns correction factor in diet relative to target weight
+  dietfactor = targetWeight/petWeight #returns correction factor in diet relative to target weight
 
   foodGoal = petWeight * dietFactor * 27 #daily food goal adjusted for dietary needs
   print(petName + " needs: " + foodGoal + "g of food")
@@ -23,30 +25,34 @@ def main():
   return
 
 def consumptionProgress():
-  foodProgress = (foodEaten / foodGoal) * 100;
+  foodProgress = (foodEaten / foodGoal) * 100; #create percent of goal
   waterProgress = (waterDrank / waterGoal) * 100;
   print(petName + " has eaten " + foodProgress + "% of their daily food goal as of")
   print current_time()
   print(petName + " has drank " + waterProgress + "% of their daily water goal as of")
   print current_time()
 
-  goalDict = { #creates a dictionary with the date: true/false format
+  goalDict1 = { #creates a dictionary with the date: true/false format
     'date': 'true/false'
-  }
+  } #this one is for food
+
+  goalDict2 = { #creates a dictionary with the date: true/false format
+    'date': 'true/false'
+  } #this one is for water
 
   if foodProgress >= 100:
-    foodGoalMet = current_time()
-    goalDict[foodGoalMet] = 'true' #adds todays date with value true
+    foodGoalMet = current_date()
+    goalDict1[foodGoalMet] = 'true' #adds todays date with value true
   else:
-    foodGoalMet = current_time()
-    goalDict[foodGoalMet] = 'false' #adds todays date with value false
+    foodGoalMet = current_date()
+    goalDict1[foodGoalMet] = 'false' #adds todays date with value false
 
   if waterProgress >= 100:
-    waterGoalMet = current_time()
-    goalDict[waterGoalMet] = 'true' #adds todays date with value true
+    waterGoalMet = current_date()
+    goalDict2[waterGoalMet] = 'true' #adds todays date with value true
   else:
-    waterGoalMet = current_time()
-    goalDict[waterGoalMet] = 'false' #adds todays date with value false
+    waterGoalMet = current_date()
+    goalDict2[waterGoalMet] = 'false' #adds todays date with value false
 
   print("Would you like to see your goals to date?")
   yesorno = input()
@@ -58,4 +64,7 @@ def consumptionProgress():
   return
 
 def current_time():
-  return datetime.now().strftime('%m-%d-%Y %H:%M:%S') #creates string with MM/DD/YY and HR:Min:sec
+  return datetime.now().strftime('%m-%d-%Y %H:%M:%S') #creates string with MM/DD/YYYY and HR:Min:sec
+
+def current_date():
+  return datetime.now().strftime('%m-%d-%Y') #creates string with MM/DD/YYYY

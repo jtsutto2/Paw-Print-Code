@@ -69,11 +69,7 @@ void loop() {
         Serial.print(",");
         Serial.print(2);
         Serial.print(",");
-        Serial.print(3);
-        Serial.print(",");
-        Serial.print(4);
-        Serial.print(",");
-        Serial.println(5);
+        Serial.println(3);
         
         /*
         Serial.print(dispenseCount);

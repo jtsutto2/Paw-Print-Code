@@ -62,7 +62,8 @@ def consumptionProgress():
   print("Would you like to see your goals to date?")
   yesorno = input()
   if yesorno.casefold() == 'yes': #not case sensitive
-    print(goalDict) #prints dates and if goal was met or not, will update to graph later
+    print(goalDict1) #prints dates and if goal was met or not, will update to graph later
+    print(goalDict2)
   else if yesorno.casefold() == 'no':
     continue
   

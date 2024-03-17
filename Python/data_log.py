@@ -2,50 +2,50 @@ import serial
 from datetime import datetime
 import csv
 import time
-import os
 
-# Define the path to the CSV file
-csv_file_path = 'data_log.csv'
+#Open a csv file and set it up to receive comma delimited input
+logging = open('data_log.csv',mode='a')
+writer = csv.writer(logging, delimiter=",", quoting=csv.QUOTE_MINIMAL)
 
-# Check if the file exists and is empty to decide whether to add headers later
-file_exists = os.path.isfile(csv_file_path) and os.path.getsize(csv_file_path) > 0
+# Write the headers
+writer.writerow(["Time (EST)", "Dispense Count (#)", "Food Eaten (g)", "Water Drank (mL)"])
 
-# Open the CSV file to append
-with open(csv_file_path, mode='a', newline='') as logging:
-    writer = csv.writer(logging, delimiter=",", quoting=csv.QUOTE_MINIMAL)
+#Open a serial port that is connected to an Arduino (below is Linux, Windows and Mac would be "COM4" or similar)
+#No timeout specified; program will wait until all serial data is received from Arduino
+#Port description will vary according to operating system. Linux will be in the form /dev/ttyXXXX
+#Windows and MAC will be COMX
+ser = serial.Serial('/dev/ttyACM0')
+ser.flushInput()
 
-    # If the file didn't exist or was empty, write the headers
-    if not file_exists:
-        writer.writerow(["Time (EST)", "Dispense Count (#)", "Food Eaten (g)", "Water Drank (mL)"])
+#Write out a single character encoded in utf-8; this is defalt encoding for Arduino serial comms
+#This character tells the Arduino to start sending data
+ser.write(bytes('x', 'utf-8'))
 
-    # Open the serial port connected to Arduino
-    ser = serial.Serial('/dev/ttyACM0')
-    ser.flushInput()
+# Wait for 5 seconds to skip initial unwanted output
+time.sleep(5)
 
-    # Tell the Arduino to start sending data
-    ser.write(bytes('x', 'utf-8'))
-
-    # Wait to skip initial unwanted output
-    time.sleep(5)
-
-    while True:
-        ser_bytes = ser.readline()
-        
-        # Convert received bytes to text format, trimming the newline
-        decoded_bytes = ser_bytes.decode("utf-8").strip()
-        
-        # Retrieve current time
-        current_time = datetime.now().strftime('%H:%M:%S')
-        
-        # Exit loop if Arduino sends "stop"
-        if decoded_bytes == "stop":
-            break
-        
-        # Split the decoded bytes by commas and prepend the time
-        data = [current_time] + decoded_bytes.split(',')
-        
-        # Write the data to CSV, ensuring no additional spaces
-        writer.writerow(data)
-
-    ser.close()
-print("logging finished")
+while True:
+    #Read in data from Serial until \n (new line) received
+    ser_bytes = ser.readline()
+    print(ser_bytes)
+    
+    #Convert received bytes to text format
+    decoded_bytes = (ser_bytes[0:len(ser_bytes)-2].decode("utf-8"))
+    print(decoded_bytes)
+    
+    #Retreive current time
+    c = datetime.now()
+    current_time = c.strftime('%H:%M:%S')
+    print(current_time)
+    
+    #If Arduino has sent a string "stop", exit loop
+    if (decoded_bytes == "stop"):
+         break
+    
+    #Write received data to CSV file
+    writer.writerow([current_time,decoded_bytes])
+            
+# Close port and CSV file to exit
+ser.close()
+logging.close()
+print("logging finished”)

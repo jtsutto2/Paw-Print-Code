@@ -1,14 +1,22 @@
 import serial
 from datetime import datetime
 import csv
+import os
 import time
+
+# Define the path to the CSV file
+csv_file_path = 'data_log.csv'
+
+# Check if the file already exists and has content
+file_exists = os.path.isfile(csv_file_path) and os.path.getsize(csv_file_path) > 0
 
 #Open a csv file and set it up to receive comma delimited input
 logging = open('data_log.csv',mode='a')
-writer = csv.writer(logging, delimiter=",", quoting=csv.QUOTE_MINIMAL)
+writer = csv.writer(logging, delimiter=",", quoting=csv.QUOTE_NONE)
 
-# Write the headers
-writer.writerow(["Time (EST)", "Dispense Count (#)", "Food Eaten (g)", "Water Drank (mL)"])
+# Write the headers only if the file doesn't exist already
+if not file_exists:
+    writer.writerow(["Time (EST)", "Dispense Count (#)", "Food Eaten (g)", "Water Drank (mL)"])
 
 #Open a serial port that is connected to an Arduino (below is Linux, Windows and Mac would be "COM4" or similar)
 #No timeout specified; program will wait until all serial data is received from Arduino

@@ -14,13 +14,18 @@ def main():
   print("What is " + petName + "'s target weight?")
   targetWeight = input()
   dietfactor = targetWeight/petWeight #returns correction factor in diet relative to target weight
+  #if targetWeight < petWeight then dietFactor < 1 to indicate less food
 
   foodGoal = petWeight * dietFactor * 27 #daily food goal adjusted for dietary needs
   print(petName + " needs: " + foodGoal + "g of food")
   waterGoal = petWeight * 30 #water should be based on current weight not target 
   print(petName + " needs: " + waterGoal + "mL of water")
 
-  consumptionProgress()
+  while True:
+    if consumptionTrigger % 1000 == 0: #makes this run less often
+      consumptionProgress()
+    else:
+      consumptionTrigger += 1 #increase count
   
   return
 

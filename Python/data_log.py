@@ -11,7 +11,7 @@ csv_file_path = '/home/pawprint/Documents/csv_output/data_log.csv'
 file_exists = os.path.isfile(csv_file_path) and os.path.getsize(csv_file_path) > 0
 
 #Open a csv file and set it up to receive comma delimited input
-logging = open('data_log.csv',mode='a')
+logging = open('/home/pawprint/Documents/csv_output/data_log.csv',mode='a')
 writer = csv.writer(logging, delimiter=",", escapechar="\\", quoting=csv.QUOTE_NONE)
 
 # Write the headers only if the file doesn't exist already

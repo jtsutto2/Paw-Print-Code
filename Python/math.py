@@ -6,12 +6,12 @@ def main():
   print("Enter your pets name and then press enter:")
   petName = input()
   
-  print("Please enter " + petName + "'s weight in pounds")
+  print("Please enter " + petName + "'s weight in pounds. Ex. 25.7")
   petWeight = input()
 
   #maybe add an option to manually enter a diet based on vet reccomendation
 
-  print("What is " + petName + "'s target weight?")
+  print("What is " + petName + "'s target weight in pounds? Ex. 20.0")
   targetWeight = input()
   dietfactor = targetWeight/petWeight #returns correction factor in diet relative to target weight
   #if targetWeight < petWeight then dietFactor < 1 to indicate less food
@@ -38,11 +38,11 @@ def consumptionProgress():
   print current_time()
 
   goalDict1 = { #creates a dictionary with the date: true/false format
-    'date': 'true/false'
+    'Date MM/DD/YYYY': 'Goal met? (true/false)'
   } #this one is for food
 
   goalDict2 = { #creates a dictionary with the date: true/false format
-    'date': 'true/false'
+    'Date MM/DD/YYYY': 'Goal met? (true/false)'
   } #this one is for water
 
   if foodProgress >= 100:
@@ -58,6 +58,7 @@ def consumptionProgress():
   else:
     waterGoalMet = current_date()
     goalDict2[waterGoalMet] = 'false' #adds todays date with value false
+    #does not allow duplicates so will update for todays date if one already exists
 
   print("Would you like to see your goals to date?")
   yesorno = input()

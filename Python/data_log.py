@@ -12,7 +12,7 @@ file_exists = os.path.isfile(csv_file_path) and os.path.getsize(csv_file_path) >
 
 #Open a csv file and set it up to receive comma delimited input
 logging = open('data_log.csv',mode='a')
-writer = csv.writer(logging, delimiter=",", quoting=csv.QUOTE_NONE)
+writer = csv.writer(logging, delimiter=",", escapechar="\\", quoting=csv.QUOTE_NONE)
 
 # Write the headers only if the file doesn't exist already
 if not file_exists:
@@ -51,7 +51,15 @@ while True:
          break
     
     #Write received data to CSV file
-    writer.writerow([current_time,decoded_bytes])
+
+    # Split decoded_bytes into a list
+    data_parts = decoded_bytes.split(',')
+
+    # Combine current_time with data_parts into a single list
+    row_data = [current_time] + data_parts
+
+    # Write the combined list to the CSV, resulting in each part being a separate column
+    writer.writerow(row_data)
             
 # Close port and CSV file to exit
 ser.close()

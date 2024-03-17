@@ -48,4 +48,3 @@ while True:
 # Close port and CSV file to exit
 ser.close()
 logging.close()
-print("logging finished”)

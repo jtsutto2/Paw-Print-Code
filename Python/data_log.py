@@ -5,7 +5,7 @@ import os
 import time
 
 # Define the path to the CSV file
-csv_file_path = 'data_log.csv'
+csv_file_path = '/home/pawprint/Documents/csv_output/data_log.csv'
 
 # Check if the file already exists and has content
 file_exists = os.path.isfile(csv_file_path) and os.path.getsize(csv_file_path) > 0

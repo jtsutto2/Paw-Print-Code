@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const petForm = document.getElementById('petForm');
 
     petForm.addEventListener('submit', function (event) {
-        event.preventDefault();
+        event.preventDefault(); // Prevent default form submission behavior
 
         const formData = new FormData(petForm);
 
@@ -11,7 +11,12 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // Parse JSON response
+        })
         .then(data => {
             // Handle response from Flask
             // Render charts using received data
@@ -25,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderCharts(data) {
         // Use Chart.js to render charts based on the processed data
         // Example:
-        const ctx = document.getElementById('myChart').getContext('2d');
+        const ctx = document.getElementById('chartContainer').getContext('2d');
         const myChart = new Chart(ctx, {
             type: 'bar',
             data: {

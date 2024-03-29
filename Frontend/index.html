@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pet Information</title>
-    <!-- Include any necessary CSS files -->
+    <!-- Include necessary CSS files here -->
 </head>
 <body>
     <h1>Pet Information</h1>
     <form id="petForm">
-        <!–– These are the buttons and text fields ––>
         <label for="petName">Pet Name:</label>
         <input type="text" id="petName" name="petName"><br><br>
         <label for="petCurrentWeight">Pet Weight:</label>
@@ -17,80 +16,71 @@
         <label for="petTargetWeight">Pet Target Weight:</label>
         <input type="text" id="petTargetWeight" name="petTargetWeight"><br><br>
         <!-- Include other input fields for pet information -->
-        <button type="submit">Submit</button>
+        <button type="submit" onclick="submitForm()">Submit</button>
     </form>
 
     <div id="chartContainer">
         <!-- Chart will be rendered here -->
+        <canvas id="myChart"></canvas>
     </div>
 
     <!-- Include Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Include your JavaScript file -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-    const petForm = document.getElementById('petForm');
+        function submitForm() {
+            const petName = document.getElementById('petName').value;
+            const petCurrentWeight = document.getElementById('petCurrentWeight').value;
+            const petTargetWeight = document.getElementById('petTargetWeight').value;
 
-    petForm.addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent default form submission behavior
+            const formData = new FormData();
+            formData.append('petName', petName);
+            formData.append('petCurrentWeight', petCurrentWeight);
+            formData.append('petTargetWeight', petTargetWeight);
 
-        const formData = new FormData(petForm);
+            fetch('/submit_pet_info', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                renderChart(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
 
-        // Send pet information to Flask backend using AJAX
-        fetch('/submit_pet_info', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json(); // Parse JSON response
-        })
-        .then(data => {
-            // Handle response from Flask
-            // Render charts using received data
-            renderCharts(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
-
-    function renderCharts(data) {
-        // Use Chart.js to render charts based on the processed data
-        // Example:
-        const ctx = document.getElementById('chartContainer').getContext('2d');
-        const myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Pet 1', 'Pet 2', 'Pet 3'],
-                datasets: [{
-                    label: 'Age',
-                    data: [data.pet1.age, data.pet2.age, data.pet3.age],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+        function renderChart(data) {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Pet 1', 'Pet 2', 'Pet 3'],
+                    datasets: [{
+                        label: 'Weight',
+                        data: [data.pet1.weight, data.pet2.weight, data.pet3.weight],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        });
-    }
-});
+            });
+        }
     </script>
 </body>
 </html>

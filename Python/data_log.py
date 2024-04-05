@@ -14,14 +14,15 @@ file_exists = os.path.isfile(csv_file_path) and os.path.getsize(csv_file_path) >
 logging = open('/home/pawprint/Documents/csv_output/data_log.csv',mode='a')
 writer = csv.writer(logging, delimiter=",", escapechar="\\", quoting=csv.QUOTE_NONE)
 
-# Modify the header row to reflect the inclusion of both date and time
+# Update the header row to include separate columns for Date and Time
 if not file_exists:
-    writer.writerow(["Timestamp (EST)", "Dispense Count (#)", "Food Eaten (g)", "Water Drank (mL)"])
+    writer.writerow(["Date", "Time (EST)", "Dispense Count (#)", "Food Eaten (g)", "Water Drank (mL)"])
 
-# Modify the part where you retrieve the current time to include both date and time
+# Modify the section where the current time is retrieved to format date and time separately
 c = datetime.now()
-current_time = c.strftime('%Y-%m-%d %H:%M:%S')  # This includes the date and time
-print(current_time)
+current_date = c.strftime('%Y-%m-%d')  # Format for the date
+current_time = c.strftime('%H:%M:%S')  # Format for the time
+print(current_date, current_time)
 
 #Open a serial port that is connected to an Arduino (below is Linux, Windows and Mac would be "COM4" or similar)
 #No timeout specified; program will wait until all serial data is received from Arduino
@@ -61,7 +62,7 @@ while True:
     data_parts = decoded_bytes.split(',')
 
     # Combine current_time with data_parts into a single list
-    row_data = [current_time] + data_parts
+    row_data = [current_date, current_time] + data_parts
 
     # Write the combined list to the CSV, resulting in each part being a separate column
     writer.writerow(row_data)

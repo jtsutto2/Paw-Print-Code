@@ -45,6 +45,31 @@
             const petCurrentWeight = document.getElementById('petCurrentWeight').value;
             const petTargetWeight = document.getElementById('petTargetWeight').value;
 
+            const data = {
+                petName: petName,
+                petCurrentWeight: petCurrentWeight,
+                petTargetWeight: petTargetWeight
+            };
+
+            fetch('/submit_pet_info', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                renderChart(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+            /*const petName = document.getElementById('petName').value;
+            const petCurrentWeight = document.getElementById('petCurrentWeight').value;
+            const petTargetWeight = document.getElementById('petTargetWeight').value;
+
             const formData = new FormData();
             formData.append('petName', petName);
             formData.append('petCurrentWeight', petCurrentWeight);
@@ -60,7 +85,7 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-            });
+            });*/
         }
 
         function renderChart(data) {

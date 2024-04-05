@@ -66,6 +66,8 @@ while True:
 
     # Write the combined list to the CSV, resulting in each part being a separate column
     writer.writerow(row_data)
+
+    logging.flush()  # This ensures the data is written to the file immediately
             
 # Close port and CSV file to exit
 ser.close()

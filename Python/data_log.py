@@ -14,9 +14,14 @@ file_exists = os.path.isfile(csv_file_path) and os.path.getsize(csv_file_path) >
 logging = open('/home/pawprint/Documents/csv_output/data_log.csv',mode='a')
 writer = csv.writer(logging, delimiter=",", escapechar="\\", quoting=csv.QUOTE_NONE)
 
-# Write the headers only if the file doesn't exist already
+# Modify the header row to reflect the inclusion of both date and time
 if not file_exists:
-    writer.writerow(["Time (EST)", "Dispense Count (#)", "Food Eaten (g)", "Water Drank (mL)"])
+    writer.writerow(["Timestamp (EST)", "Dispense Count (#)", "Food Eaten (g)", "Water Drank (mL)"])
+
+# Modify the part where you retrieve the current time to include both date and time
+c = datetime.now()
+current_time = c.strftime('%Y-%m-%d %H:%M:%S')  # This includes the date and time
+print(current_time)
 
 #Open a serial port that is connected to an Arduino (below is Linux, Windows and Mac would be "COM4" or similar)
 #No timeout specified; program will wait until all serial data is received from Arduino

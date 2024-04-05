@@ -64,20 +64,13 @@ void loop() {
 
     // The following will frequently print out pet's daily consumption progress
     if (currentTime() >= consumptionCooldown) {
-
-        Serial.print(1);
-        Serial.print(",");
-        Serial.print(2);
-        Serial.print(",");
-        Serial.println(3);
         
-        /*
         Serial.print(dispenseCount);
         Serial.print(",");
         Serial.print(foodEaten);
         Serial.print(",");
         Serial.println(waterDrank);
-        */
+
         consumptionCooldown = cooldown(2);
     }
 }

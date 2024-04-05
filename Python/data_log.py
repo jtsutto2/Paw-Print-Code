@@ -59,11 +59,14 @@ while True:
     c = datetime.now()
     current_time = c.strftime('%H:%M:%S')
     print(current_time)
+
+    # Split decoded_bytes into a list
+    data_parts = decoded_bytes.split(',')
     
     # Convert the food and water values to float for comparison
     # Note the adjustment in indices according to your CSV structure
-    current_food = float(data_parts[3])  # Adjusted index for Food Eaten
-    current_water = float(data_parts[4])  # Adjusted index for Water Drank
+    current_food = float(data_parts[1])  # Adjusted index for Food Eaten
+    current_water = float(data_parts[2])  # Adjusted index for Water Drank
     
     # Determine if the changes are significant
     is_significant_change = False
@@ -77,9 +80,6 @@ while True:
          break
     
     #Write received data to CSV file
-
-    # Split decoded_bytes into a list
-    data_parts = decoded_bytes.split(',')
 
     # If there's a significant change in either value, log the data
     if is_significant_change:

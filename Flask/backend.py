@@ -37,16 +37,18 @@ def get_processed_data():
 
 @app.route('/submit_pet_info', methods=['POST'])
 def submit_pet_info():
-    data = request.get_json()
-    # Assuming you want to update your user_data with this JSON data
-    # Remember, user_data might need to be more dynamic depending on your application's requirements
-    user_data['pet_type'] = data.get('petName')  # You might need to adjust the key based on your JS
-    user_data['weight'] = data.get('petCurrentWeight')  # Adjust the key as necessary
-
-    # Process your data here
-    # For example, call a function from calculation_module to process this data
-
-    # For demonstration, let's just return the received JSON
+    # For JSON data
+    if request.is_json:
+        data = request.get_json()
+        print("Received JSON data:", data)  # Print received JSON to console
+    else:
+        # For form data
+        data = request.form.to_dict()
+        print("Received form data:", data)  # Print received form data to console
+    
+    # Your processing logic here
+    
+    # Return a response
     return jsonify({'status': 'success', 'receivedData': data})
 
 # Function to read and parse data_log.csv

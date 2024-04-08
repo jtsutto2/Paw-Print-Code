@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template
 import csv
 
 # Assuming you have a separate module for specific calculations
-import calculation_module
+#import calculation_module
 
 app = Flask(__name__)
 
@@ -35,6 +35,7 @@ def get_processed_data():
     # Return processed data as JSON
     return jsonify(processed_data)
 
+# Route that receives JSON data from frontend
 @app.route('/submit_pet_info', methods=['POST'])
 def submit_pet_info():
     # For JSON data

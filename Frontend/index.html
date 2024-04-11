@@ -1,130 +1,129 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paw Print</title>
+    <title>Pet Information</title>
     <!-- Include necessary CSS files here -->
-   <style>
+    <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #D8C4B7;
+            font-family: 'Lato', Times, serif;
+            background-color: #faeac8;
             margin: 10;
             padding: 10;
         }
+        
+        /* Style for the header */
+        header {
+            background-color: #f7efdf;
+            padding: 20px;
+            text-align: middle; /* Align the content inside header to middle */
+        }   
+
+        #mainTitle {
+            font-size: 2em;
+            margin-top: 20px;
+        }
+
+        #petInfoTitle {
+            text-align: center; /* Center-align the "Pet Information" title */
+            font-size: 2em;
+            margin-top: 20px;
+        }
     </style>
 </head>
-    
-<body>
+<body> 
 
-    <h1>Pet Information</h1>
-    <form id="petForm">
-        <label for="petName">Pet Name:</label>
-        <input type="text" id="petName" name="petName"><br><br>
-        <label for="petCurrentWeight">Pet Weight:</label>
-        <input type="text" id="petCurrentWeight" name="petCurrentWeight"><br><br>
-        <label for="petTargetWeight">Pet Target Weight:</label>
-        <input type="text" id="petTargetWeight" name="petTargetWeight"><br><br>
-        <!-- Include other input fields for pet information -->
-        <button type="submit" onclick="submitForm();alert('Thank you for registering with Paw Print!')">Submit</button>
-        <input type="reset" value="Reset">
-     
-        
-    </form>
+<header>
+    <h1 id="mainTitle">Paw Print</h1>
+    <!-- Navigation or other header content can be added here -->
+</header>
 
-    <div id="chartContainer">
-        <!-- Chart will be rendered here -->
-        <canvas id="myChart"></canvas>
-    </div>
+<h1 id="petInfoTitle">Pet Information</h1>
 
-    <!-- Include Chart.js library -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        function submitForm() {
-            const petName = document.getElementById('petName').value;
-            const petCurrentWeight = document.getElementById('petCurrentWeight').value;
-            const petTargetWeight = document.getElementById('petTargetWeight').value;
+<form id="petForm">
+    <label for="petName">Pet Name:</label>
+    <input type="text" id="petName" name="petName"><br><br>
+    <label for="petCurrentWeight">Pet Weight:</label>
+    <input type="text" id="petCurrentWeight" name="petCurrentWeight"><br><br>
+    <label for="petTargetWeight">Pet Target Weight:</label>
+    <input type="text" id="petTargetWeight" name="petTargetWeight"><br><br>
+    <!-- Include other input fields for pet information -->
+    <button type="submit" onclick="submitForm()">Submit</button>
+    <button type="reset">Reset</button>
+</form>
 
-            const data = {
-                petName: petName,
-                petCurrentWeight: petCurrentWeight,
-                petTargetWeight: petTargetWeight
-            };
+<div id="chartContainer">
+    <!-- Chart will be rendered here -->
+    <canvas id="myChart"></canvas>
+</div>
 
-            fetch('/submit_pet_info', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                renderChart(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-            
-            /*const petName = document.getElementById('petName').value;
-            const petCurrentWeight = document.getElementById('petCurrentWeight').value;
-            const petTargetWeight = document.getElementById('petTargetWeight').value;
+<!-- Include Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function submitForm() {
+        const petName = document.getElementById('petName').value;
+        const petCurrentWeight = document.getElementById('petCurrentWeight').value;
+        const petTargetWeight = document.getElementById('petTargetWeight').value;
 
-            const formData = new FormData();
-            formData.append('petName', petName);
-            formData.append('petCurrentWeight', petCurrentWeight);
-            formData.append('petTargetWeight', petTargetWeight);
+        const formData = new FormData();
+        formData.append('petName', petName);
+        formData.append('petCurrentWeight', petCurrentWeight);
+        formData.append('petTargetWeight', petTargetWeight);
 
-            fetch('/submit_pet_info', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                renderChart(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });*/
-        }
+        fetch('/submit_pet_info', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            renderChart(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
 
-        function renderChart(data) {
-            const ctx = document.getElementById('myChart').getContext('2d');
-            const myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Pet 1', 'Pet 2', 'Pet 3'],
-                    datasets: [{
-                        label: 'Food Eaten',
-                        data: [data.pet1.food, data.pet2.food, data.pet3.food],
-                        label: 'Water Drank',
-                        data: [data.pet1.water, data.pet2.water, data.pet3.water],
-                        label: 'Food Goal Met',
-                        data: [data.pet1.goal1, data.pet2.goal1, data.pet3.goal1],
-                        label: 'Water Goal Met',
-                        data: [data.pet1.goal2, data.pet2.goal2, data.pet3.goal2],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+    function renderChart(data) {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Pet 1', 'Pet 2', 'Pet 3'],
+                datasets: [{
+                    label: 'Food Eaten',
+                    data: [data.pet1.food, data.pet2.food, data.pet3.food],
+                    label: 'Water Drank',
+                    data: [data.pet1.water, data.pet2.water, data.pet3.water],
+                    label: 'Food Goal Met',
+                    data: [data.pet1.goal1, data.pet2.goal1, data.pet3.goal1],
+                    label: 'Water Goal Met',
+                    data: [data.pet1.goal2, data.pet2.goal2, data.pet3.goal2],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
-            });
-        }
-    </script>
+            }
+        });
+    }
+</script>
 </body>
 </html>
+```
+

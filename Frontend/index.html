@@ -18,7 +18,7 @@
         header {
             background-color: #f7efdf;
             padding: 20px;
-            text-align: middle; /* Align the content inside header to middle */
+            text-align: left; /* Align the content inside header to left */
         }   
 
         #mainTitle {
@@ -50,8 +50,8 @@
     <label for="petTargetWeight">Pet Target Weight:</label>
     <input type="text" id="petTargetWeight" name="petTargetWeight"><br><br>
     <!-- Include other input fields for pet information -->
-    <button type="submit" onclick="submitForm()">Submit</button>
-    <button type="reset">Reset</button>
+    <button type="submit" onclick="submitForm();alert("Thank you for registering with Paw Print!")">Submit</button>
+    <button type="reset" onclick="resetForm()">Reset</button>
 </form>
 
 <div id="chartContainer">
@@ -83,6 +83,12 @@
         .catch(error => {
             console.error('Error:', error);
         });
+    }
+
+    function resetForm() {
+        formData.delete('petName');
+        formData.delete('petCurrentWeight');
+        formData.delete('petTargetWeight');
     }
 
     function renderChart(data) {

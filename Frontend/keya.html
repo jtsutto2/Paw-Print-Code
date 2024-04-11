@@ -1,0 +1,428 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paw Print</title>
+    <!-- Include necessary CSS files here -->
+    <style>
+    
+        body {
+            font-family: 'Lato', Times, serif;
+            background-color: #faeac8;
+            margin: 10;
+            padding: 10;
+        }
+        
+        /* Style for the header */
+        header {
+            background-color: #086680;
+	    color: #ffffff;
+	    font-family: 'Lato', Times, serif;
+            padding: 20px;
+            text-align: center; /* Align the content inside header to center */
+        } 
+	
+	h1 {
+	color: #FFFFFF;
+	} 
+	
+	h2 {
+	color: black;
+	}  
+
+        #mainTitle {
+            font-size: 2em;
+            margin-top: 20px;
+        }
+
+        #petInfoTitle {
+            text-align: left; /* left-align the "Pet Information" title */
+            font-size: 2em;
+            margin-top: 20px;
+        }
+
+	/* Style for the different sections */
+        .section {
+            display: none;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: 'Lato', Times, serif;
+            background-color: #fceac8;
+        }
+
+        .active {
+            display: block;
+        }
+
+        /* Style for the home page section */
+        #home {
+            display: block;
+        }
+
+        #home p {
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+    /* Style for the navigation links */
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+	    color: #ffffff;
+            display: inline; /* Set list items to display inline */
+        }
+
+        nav ul li {
+            display: inline; /* Display list items inline */
+	    color: #ffffff;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none; /* Remove underline */
+            color: #ffffff; /* Set color */
+            font-weight: bold; /* Make the text bold */
+            font-size: 16px; /* Set font size */
+        }
+
+        nav ul li a:hover {
+            color: #555; /* Change color on hover */
+        }
+        
+       
+    .marketing-square {
+      width: 200px; /* Adjust the width as needed */
+      height: 200px; /* Adjust the height as needed */
+      background-color: #f0f0f0; /* Set background color */
+      padding: 20px; /* Add padding for text */
+      border-radius: 10px; /* Add rounded corners */
+      float: left; /* Float the square to the left */
+      margin-right: 20px; /* Add margin to create space between the square and other content */
+    }
+
+     
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </style>
+</head>
+<body> 
+
+<header>
+    <h1 id="mainTitle">Paw Print</h1>
+    <!-- Navigation or other header content can be added here -->
+    <nav>
+        <ul id="navLinks">
+            <li><a href="#" onclick="showSection('home')">Home</a></li>
+	    <li><a href="#" onclick="showSection('about')">About Us</a></li>
+	    <li><a href="#" onclick="showSection('product')">Buy the Paw Print Palace</a></li>
+            <li><a href="#" onclick="showSection('register')">Register a Pet</a></li>
+ 	    <li><a href="#" onclick="showSection('chart')">Monitor your Pet</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div id="chart" class="section">
+    <h2>Monitor Your Pet</h2>
+    <div id="authForm">
+        <label for="authUsername">Username:</label>
+        <input type="text" id="authUsername" name="authUsername"><br><br>
+        <label for="authPassword">Password:</label>
+        <input type="password" id="authPassword" name="authPassword"><br><br>
+        <button type="button" onclick="authenticateUser()">Login</button>
+    </div>
+    <div id="chartContainer" style="display:none;">
+        <!-- Chart will be rendered here -->
+        <canvas id="myChart"></canvas>
+    </div>
+</div>
+
+<div id="home" class="section active">
+    <h2>Welcome to Paw Print!</h2>
+</div>
+
+<div class= "marketing-square">
+  <p>Elevate your pet's dining experience with our automatic feeders – reliable, convenient, and tailored to their needs. Say hello to hassle-free feeding and goodbye to mealtime worries!</p>
+</div>
+
+
+
+<div id="register" class="section">
+    <h2>Register a Pet</h2>
+    <form id="registerForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <label for="petName">Pet Name:</label>
+        <input type="text" id="petName" name="petName"><br><br>
+        <label for="petCurrentWeight">Pet Weight:</label>
+        <input type="text" id="petCurrentWeight" name="petCurrentWeight"><br><br>
+        <label for="petTargetWeight">Pet Target Weight:</label>
+        <input type="text" id="petTargetWeight" name="petTargetWeight"><br><br>
+        <!-- Include other input fields for pet information -->
+        <button type="submit" onclick="registerUser();alert('Thank you for registering with Paw Print!')">Submit</button>
+        <button type="reset" onclick="resetForm()">Reset</button>
+    </form>
+</div>
+
+<div id="about" class="section">
+    <h2>About Us</h2>
+    <img src="about_us_image.jpg" alt="About Us Image">
+    <p>Paw Print is made up of 6 members: Danny, Sam, Glen, Josh, Fares, and Keya. We are all NC State Engineering students and working within the Engineering Entrepreneurship Program (EEP) to collaboratively create our own business. We combine our technical expertise with the business experience of the EEP faculty to generate a product with the potential to establish itself in the market.</p>
+    <p>Paw Print strives to create products that keep our furry friends as healthy and happy as possible. We all love our pets but it is hard to keep track of what is going on with them at all times. By recreating the technology we use to track our own health, we can apply them to products our pets use every day. The sensors in every product communicate with our proprietary software to provide meaningful and relevant information to the user.</p>
+</div>
+
+<div id="product" class="section">
+    <h2>Health-Oriented Automatic Feeder</h2>
+    <p>Our health-oriented automatic feeder is designed to track the food and water consumption of pets, ensuring they maintain a healthy diet and hydration level. It features:</p>
+    <ul>
+        <li>Automatic portion control based on pet's weight and dietary needs.</li>
+        <li>Real-time monitoring of food and water intake via our website.</li>
+        <li>Customizable feeding schedules and notifications.</li>
+        <li>Easy-to-clean and durable design.</li>
+    </ul>
+
+    <h2>Shipping Address</h2>
+    <form id="shippingForm">
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" name="fullName"><br><br>
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address"><br><br>
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city"><br><br>
+        <label for="state">State:</label>
+        <input type="text" id="state" name="state"><br><br>
+        <label for="zip">ZIP Code:</label>
+        <input type="text" id="zip" name="zip"><br><br>
+    </form>
+
+    <h2>Payment Information</h2>
+    <form id="paymentForm">
+	<label for="nameOnCard">Name on Card:</label> <!-- Added input for name on card -->
+        <input type="text" id="nameOnCard" name="nameOnCard"><br><br> <!-- Added input for name on card -->
+        <label for="cardNumber">Card Number:</label>
+        <input type="text" id="cardNumber" name="cardNumber"><br><br>
+        <label for="expiryDate">Expiry Date:</label>
+        <input type="text" id="expiryDate" name="expiryDate"><br><br>
+        <label for="cvv">CVV:</label>
+        <input type="text" id="cvv" name="cvv"><br><br>
+        <button type="submit" onclick="submitOrder();alert('Thank you for your order!')">Place Order</button>
+    </form>
+</div>
+
+<!-- Include Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function showSection(sectionId) {
+        // Hide the home section
+        document.getElementById('home').classList.remove('active');
+
+        // Hide all sections
+        const sections = document.getElementsByClassName('section');
+        for (let i = 0; i < sections.length; i++) {
+            sections[i].classList.remove('active');
+        }
+
+        // Show the selected section
+        document.getElementById(sectionId).classList.add('active');
+    }
+
+    function registerUser() {
+        // Retrieve username and password from the form
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Store username and password securely (you can use local storage, session storage, or send to server for backend verification)
+        localStorage.setItem('username', username);
+        localStorage.setItem('password', password);
+    }
+
+    function authenticateUser() {
+        // Retrieve stored username and password
+        const storedUsername = localStorage.getItem('username');
+        const storedPassword = localStorage.getItem('password');
+
+        // Retrieve entered username and password
+        const enteredUsername = document.getElementById('authUsername').value;
+        const enteredPassword = document.getElementById('authPassword').value;
+
+        // Check if entered credentials match stored credentials
+        if (enteredUsername === storedUsername && enteredPassword === storedPassword) {
+            // Show the chart container
+            document.getElementById('chartContainer').style.display = 'block';
+            // Optionally, you can clear the authentication form
+            document.getElementById('authForm').style.display = 'none';
+        } else {
+            alert('Invalid username or password. Please try again.');
+        }
+    }
+    
+    function validateShippingAddress() {
+    const fullName = document.getElementById('fullName').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const city = document.getElementById('city').value.trim();
+    const state = document.getElementById('state').value.trim();
+    const zip = document.getElementById('zip').value.trim();
+
+    if (fullName === '' || address === '' || city === '' || state === '' || zip === '') {
+        alert('Please fill out all required fields for shipping address.');
+        return false;
+    }
+
+    // Check ZIP code format (5 digits)
+    const zipRegex = /^\d{5}$/;
+    if (!zipRegex.test(zip)) {
+        alert('Please enter a valid ZIP code.');
+        return false;
+    }
+
+    // You can add additional checks for ZIP code and state validation using external APIs or databases
+    
+    return true;
+    }
+
+    function validatePaymentInfo() {
+        const cardNumber = document.getElementById('cardNumber').value.trim();
+        const nameOnCard = document.getElementById('nameOnCard').value.trim();
+        const expiryDate = document.getElementById('expiryDate').value.trim();
+        const cvv = document.getElementById('cvv').value.trim();
+
+    if (cardNumber === '' || nameOnCard === '' || expiryDate === '' || cvv === '') {
+        alert('Please fill out all required fields for payment information.');
+        return false;
+    }
+
+    // Check if card number is valid
+    const cardNumberRegex = /^\d{16}$/; // Simple check for 16 digits
+    if (!cardNumberRegex.test(cardNumber)) {
+        alert('Please enter a valid card number.');
+        return false;
+    }
+
+    // Validate expiry date format (MM/YY)
+    const expiryDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+    if (!expiryDateRegex.test(expiryDate)) {
+        alert('Please enter a valid expiry date (MM/YY).');
+        return false;
+    }
+
+    // Check if expiry date is not in the past
+    const [month, year] = expiryDate.split('/');
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear() % 100; // Extract last 2 digits of the year
+    const currentMonth = currentDate.getMonth() + 1; // Month is zero-based
+    if (parseInt(year) < currentYear || (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
+        alert('Please enter a valid expiry date (not in the past).');
+        return false;
+    }
+
+    // Check if CVV is valid (3 or 4 digits)
+    const cvvRegex = /^\d{3,4}$/;
+    if (!cvvRegex.test(cvv)) {
+        alert('Please enter a valid CVV.');
+        return false;
+    }
+
+    return true;
+    }
+
+    function submitOrder() {
+    if (validateShippingAddress() && validatePaymentInfo()) {
+        // Proceed with order submission
+        alert('Order submitted successfully!');
+        }
+    }
+
+
+
+    function submitForm() {
+        const petName = document.getElementById('petName').value;
+        const petCurrentWeight = document.getElementById('petCurrentWeight').value;
+        const petTargetWeight = document.getElementById('petTargetWeight').value;
+
+        const formData = new FormData();
+        formData.append('petName', petName);
+        formData.append('petCurrentWeight', petCurrentWeight);
+        formData.append('petTargetWeight', petTargetWeight);
+
+        fetch('/submit_pet_info', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            renderChart(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    function resetForm() {
+        document.getElementById('petName').value = ''; // Clear the pet name input field
+        document.getElementById('petCurrentWeight').value = ''; // Clear the pet current weight input field
+        document.getElementById('petTargetWeight').value = ''; // Clear the pet target weight input field
+
+	// Clear input fields in the shipping address section
+        document.getElementById('fullName').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('city').value = '';
+        document.getElementById('state').value = '';
+        document.getElementById('zip').value = '';
+
+        // Clear input fields in the payment information section
+        document.getElementById('cardNumber').value = '';
+        document.getElementById('expiryDate').value = '';
+        document.getElementById('cvv').value = '';
+    }
+
+    function renderChart(data) {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Pet 1', 'Pet 2', 'Pet 3'],
+                datasets: [{
+                    label: 'Food Eaten',
+                    data: [data.pet1.food, data.pet2.food, data.pet3.food],
+                    label: 'Water Drank',
+                    data: [data.pet1.water, data.pet2.water, data.pet3.water],
+                    label: 'Food Goal Met',
+                    data: [data.pet1.goal1, data.pet2.goal1, data.pet3.goal1],
+                    label: 'Water Goal Met',
+                    data: [data.pet1.goal2, data.pet2.goal2, data.pet3.goal2],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

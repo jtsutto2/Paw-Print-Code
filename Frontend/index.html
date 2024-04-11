@@ -16,10 +16,20 @@
         
         /* Style for the header */
         header {
-            background-color: #f7efdf;
+            background-color: #086680;
+	    color: #ffffff;
+	    font-family: 'Lato', Times, serif;
             padding: 20px;
             text-align: center; /* Align the content inside header to center */
-        }   
+        } 
+	
+	h1 {
+	color: #FFFFFF;
+	} 
+	
+	h2 {
+	color: #563C2F;
+	}  
 
         #mainTitle {
             font-size: 2em;
@@ -38,7 +48,7 @@
             padding: 20px;
             margin-top: 20px;
             font-family: 'Lato', Times, serif;
-            background-color: #faeac8;
+            background-color: #fceac8;
         }
 
         .active {
@@ -55,20 +65,31 @@
             text-align: center;
         }
 
-	#navLinks {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-	}
+    /* Style for the navigation links */
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+	    color: #ffffff;
+            display: inline; /* Set list items to display inline */
+        }
 
-	#navLinks li {
-    display: inline;
-    margin-right: 10px; /* Adjust spacing between links */
-	}
+        nav ul li {
+            display: inline; /* Display list items inline */
+	    color: #ffffff;
+            margin-right: 20px;
+        }
 
-	#navLinks li:last-child {
-    margin-right: 0; /* Remove margin from last link */
-	}
+        nav ul li a {
+            text-decoration: none; /* Remove underline */
+            color: #ffffff; /* Set color */
+            font-weight: bold; /* Make the text bold */
+            font-size: 16px; /* Set font size */
+        }
+
+        nav ul li a:hover {
+            color: #555; /* Change color on hover */
+        }
     </style>
 </head>
 <body> 
@@ -159,10 +180,10 @@
 
     <h2>Payment Information</h2>
     <form id="paymentForm">
+	<label for="nameOnCard">Name on Card:</label> <!-- Added input for name on card -->
+        <input type="text" id="nameOnCard" name="nameOnCard"><br><br> <!-- Added input for name on card -->
         <label for="cardNumber">Card Number:</label>
         <input type="text" id="cardNumber" name="cardNumber"><br><br>
-        <label for="nameOnCard">Name on Card:</label> <!-- Added input for name on card -->
-        <input type="text" id="nameOnCard" name="nameOnCard"><br><br> <!-- Added input for name on card -->
         <label for="expiryDate">Expiry Date:</label>
         <input type="text" id="expiryDate" name="expiryDate"><br><br>
         <label for="cvv">CVV:</label>

@@ -19,7 +19,8 @@
             background-color: #086680;
 	    color: #ffffff;
 	    font-family: 'Lato', Times, serif;
-            padding: 20px;
+	    width: 100%; /* Set width to 100% */
+            margin: 0; /* Remove default margin */
             text-align: center; /* Align the content inside header to center */
         } 
 	
@@ -90,6 +91,20 @@
         nav ul li a:hover {
             color: #555; /* Change color on hover */
         }
+
+	footer {
+            background-color: #563C2F; /* Set background color */
+            color: #ffffff; /* Set text color */
+            padding: 20px 0; /* Added padding top and bottom */
+            text-align: center;
+            width: 100%; /* Set width to 100% */
+            position: fixed; /* Fix the footer at the bottom */
+            bottom: 0; /* Align to the bottom of the viewport */
+        }
+
+        footer p {
+            margin: 0; /* Remove default margin */
+        }    
     </style>
 </head>
 <body> 
@@ -192,6 +207,11 @@
         <button type="submit" onclick="submitOrder();alert('Thank you for your order!')">Place Order</button>
     </form>
 </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Contact us at: example@example.com</p>
+    </footer>
 
 <!-- Include Chart.js library -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

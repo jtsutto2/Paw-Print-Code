@@ -1,6 +1,12 @@
 README for Flask
 
-cd /home/pawprint/Desktop/Paw-Print-Code/Flask  //navigate to directory
-source venv/bin/activate                        //to activate virtual environment
-python backend.py                               //to run environment
-deactivate                                      //to deactivate virtual environment
+cd /home/pawprint/Desktop/Paw-Print-Code/Flask
+source venv/bin/activate                        
+python backend.py                               
+deactivate                                      
+
+
+//navigate to directory
+//to activate virtual environment
+//to run environment
+//to deactivate virtual environment

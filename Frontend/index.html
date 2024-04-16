@@ -140,14 +140,18 @@
     </nav>
 </header>
 
+<!-- FORMS + SECTIONS LAYOUT -->
+
 <div id="chart" class="section">
-    <h2>Monitor Your Pet</h2>
+    <h2>Login + Monitoring</h2>
     <div id="authForm">
-        <label for="authUsername">Username:</label>
-        <input type="text" id="authUsername" name="authUsername"><br><br>
-        <label for="authPassword">Password:</label>
-        <input type="password" id="authPassword" name="authPassword"><br><br>
-        <button type="button" onclick="authenticateUser()">Login</button>
+        <form id = "loginForm" onsubmit="authenticateUser(event)">\
+            <label for="authUsername">Username:</label>
+            <input type="text" id="authUsername" name="authUsername"><br><br>
+            <label for="authPassword">Password:</label>
+            <input type="password" id="authPassword" name="authPassword"><br><br>
+            <button type="button" onclick="authenticateUser()">Login</button>
+        </form>
     </div>
     <div id="chartContainer" style="display:none;">
         <!-- Chart will be rendered here -->
@@ -164,14 +168,11 @@
   <p>Elevate your pet's dining experience with our automatic feeders – reliable, convenient, and tailored to their needs. Say hello to hassle-free feeding and goodbye to mealtime worries!</p>
 <img src="https://cdn.pixabay.com/photo/2018/10/01/09/21/pets-3715733_640.jpg" alt="Pet Feeder" style="width: 100%; height: auto;">
 
-
 </div>
 
-
-
-
-
 	
+
+<!-- REGISTRATION FORM -->
 <div id="register" class="section">
     <h2>Register a Pet</h2>
     <form id="registerForm">
@@ -186,8 +187,8 @@
         <label for="petTargetWeight">Pet Target Weight:</label>
         <input type="text" id="petTargetWeight" name="petTargetWeight"><br><br>
         <!-- Include other input fields for pet information -->
-        <button type="submit" onclick="registerUser();alert('Thank you for registering with Paw Print!')">Submit</button>
-        <button type="reset" onclick="resetForm()">Reset</button>
+        <button type="submit">Submit</button>
+        <button type="reset" onclick="resetRegister()">Reset</button>
     </form>
 </div>
 
@@ -258,15 +259,57 @@
         document.getElementById(sectionId).classList.add('active');
     }
 
-    function registerUser() {
-        // Retrieve username and password from the form
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+    //REGISTRATION FUNCTIONS//
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+            registerStorage();
+            registerForm();
+            alert('Thank you for registering with Paw Print!');
+        });
 
-        // Store username and password securely (you can use local storage, session storage, or send to server for backend verification)
-        localStorage.setItem('username', username);
-        localStorage.setItem('password', password);
-    }
+        function registerStorage() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            localStorage.setItem('username', username);
+            localStorage.setItem('password', password);
+        }
+
+        function registerForm() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const petName = document.getElementById('petName').value;
+            const petCurrentWeight = document.getElementById('petCurrentWeight').value;
+            const petTargetWeight = document.getElementById('petTargetWeight').value;
+
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('password', password);
+            formData.append('petName', petName);
+            formData.append('petCurrentWeight', petCurrentWeight);
+            formData.append('petTargetWeight', petTargetWeight);
+
+            fetch('/register', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function resetRegister() {
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('petName').value = '';
+            document.getElementById('petCurrentWeight').value = '';
+            document.getElementById('petTargetWeight').value = '';
+        }
+
+    //AUTHENTICATION FUNCTIONS//
 
     function authenticateUser() {
         // Retrieve stored username and password
@@ -365,29 +408,6 @@
     }
 
 
-
-    function submitForm() {
-        const petName = document.getElementById('petName').value;
-        const petCurrentWeight = document.getElementById('petCurrentWeight').value;
-        const petTargetWeight = document.getElementById('petTargetWeight').value;
-
-        const formData = new FormData();
-        formData.append('petName', petName);
-        formData.append('petCurrentWeight', petCurrentWeight);
-        formData.append('petTargetWeight', petTargetWeight);
-
-        fetch('/submit_pet_info', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            renderChart(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
 
     function resetForm() {
         document.getElementById('petName').value = ''; // Clear the pet name input field

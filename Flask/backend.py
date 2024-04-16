@@ -35,22 +35,35 @@ def get_processed_data():
     # Return processed data as JSON
     return jsonify(processed_data)
 
-# Route that receives JSON data from frontend
-@app.route('/submit_pet_info', methods=['POST'])
-def submit_pet_info():
-    # For JSON data
-    if request.is_json:
-        data = request.get_json()
-        print("Received JSON data:", data)  # Print received JSON to console
+# Route that receives REGISTRATION data from frontend
+@app.route('/register', methods=['POST'])
+def register():
+    # Check if the request contains form data
+    if request.form:
+        username = request.form.get('username')
+        password = request.form.get('password')
+        pet_name = request.form.get('petName')
+        pet_current_weight = request.form.get('petCurrentWeight')
+        pet_target_weight = request.form.get('petTargetWeight')
+
+        # Process or store the data here
+        print("Received registration data:")
+        print("Username:", username)
+        print("Password:", password)  # Note: Printing passwords is not a good practice for production
+        print("Pet Name:", pet_name)
+        print("Pet Current Weight:", pet_current_weight)
+        print("Pet Target Weight:", pet_target_weight)
+
+        # For demonstration, let's just return the received data as JSON
+        return jsonify({
+            'username': username,
+            'password': password,  # Be cautious with real passwords!
+            'pet_name': pet_name,
+            'pet_current_weight': pet_current_weight,
+            'pet_target_weight': pet_target_weight
+        }), 200
     else:
-        # For form data
-        data = request.form.to_dict()
-        print("Received form data:", data)  # Print received form data to console
-    
-    # Your processing logic here
-    
-    # Return a response
-    return jsonify({'status': 'success', 'receivedData': data})
+        return jsonify({'error': 'No form data received'}), 400
 
 # Function to read and parse data_log.csv
 def read_csv_data():

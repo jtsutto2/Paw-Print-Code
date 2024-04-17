@@ -165,15 +165,13 @@
 <!-- LOGIN + MONITORING FORM -->
 <div id="chart" class="section">
     <h2>Login / Monitor</h2>
-    <div id="authForm">
-        <form id="loginForm">
-            <label for="authUsername">Username:</label>
-            <input type="text" id="authUsername" name="authUsername"><br><br>
-            <label for="authPassword">Password:</label>
-            <input type="password" id="authPassword" name="authPassword"><br><br>
-            <button type="submit">Login</button>
-        </form>
-    </div>
+    <form id="loginForm">
+        <label for="authUsername">Username:</label>
+        <input type="text" id="authUsername" name="authUsername"><br><br>
+        <label for="authPassword">Password:</label>
+        <input type="password" id="authPassword" name="authPassword"><br><br>
+        <button type="submit">Login</button>
+    </form>
     <div id="chartContainer" style="display:none;">
         <!-- Chart will be rendered here -->
         <canvas id="myChart"></canvas>
@@ -261,7 +259,7 @@
     }
 
     //REGISTRATION FUNCTIONS//
-    document.getElementById('registerForm').addEventListener('submit', function(event) {
+document.getElementById('registerForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent the default form submission behavior
     registerUser();
 });
@@ -298,9 +296,11 @@ function registerUser() {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
+        console.log("Raw response:", response);
         return response.json();
     })
     .then(data => {
+        console.log('Received data:', data);
         console.log('Registration successful:', data);
         alert('Thank you for registering with Paw Print!');
     })
@@ -320,7 +320,7 @@ function resetRegister() {
 
     //AUTHENTICATION FUNCTIONS//
 
-document.getElementById('authForm').addEventListener('submit', function(event) {
+document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent the default form submission behavior
     authenticateUser();
 });
@@ -347,6 +347,7 @@ function authenticateUser() {
         if (!response.ok) {
             throw new Error('Server responded with a non-200 status: ' + response.status);
         }
+        console.log("Raw response:", response);
         return response.json();
     })
     .then(data => {

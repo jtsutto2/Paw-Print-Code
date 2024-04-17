@@ -258,7 +258,7 @@
         document.getElementById(sectionId).classList.add('active');
     }
 
-    //REGISTRATION FUNCTIONS//
+ ////////////////////REGISTRATION FUNCTIONS////////////////////////
 document.getElementById('registerForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent the default form submission behavior
     registerUser();
@@ -299,14 +299,21 @@ function registerUser() {
         console.log("Raw response:", response);
         return response.json();
     })
+    .then(text => {
+    try {
+        return JSON.parse(text);  // Then try to parse it as JSON
+    } catch (e) {
+        throw new Error('Failed to parse JSON: ' + text);  // Handle parsing errors explicitly
+    }
+    })
     .then(data => {
         console.log('Received data:', data);
         console.log('Registration successful:', data);
         alert('Thank you for registering with Paw Print!');
     })
     .catch(error => {
-        console.error('Registration failed:', error);
-        alert('Registration failed. Please try again.');
+        console.error('Registration failed due to: ', error);
+        alert('Registration failed due to: ' + error.message);
     });
 }
 
@@ -318,7 +325,7 @@ function resetRegister() {
     document.getElementById('petTargetWeight').value = '';
 }
 
-    //AUTHENTICATION FUNCTIONS//
+//////////////AUTHENTICATION FUNCTIONS////////////////
 
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent the default form submission behavior
@@ -357,8 +364,8 @@ function authenticateUser() {
         // document.getElementById('chartContainer').style.display = 'block';
     })
     .catch(error => {
-        console.error('Login failed:', error);
-        alert('Login failed. Please try again.'); // Alert the user upon failure
+        console.error('Login failed due to:', error.message);
+        alert('Login failed. Please try again.' + error.message); // Alert the user upon failure
     });
 }
     

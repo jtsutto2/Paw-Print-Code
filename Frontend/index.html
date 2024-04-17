@@ -142,15 +142,36 @@
 
 <!-- FORMS + SECTIONS LAYOUT -->
 
+<!-- Home Page -->
+<div id="home" class="section active">
+    <h2>Welcome to Paw Print!</h2> 
+</div>
+
+<!-- Image and bio -->
+<div class= "marketing-square">
+    <p>Elevate your pet's dining experience with our automatic feeders – reliable, convenient, and tailored to their needs. Say hello to hassle-free feeding and goodbye to mealtime worries!</p>
+    <img src="https://cdn.pixabay.com/photo/2018/10/01/09/21/pets-3715733_640.jpg" alt="Pet Feeder" style="width: 100%; height: auto;">
+  
+</div>
+
+<!-- About Us Page -->
+<div id="about" class="section">
+    <h2>About Us</h2>
+    <img src="about_us_image.jpg" alt="About Us Image">
+    <p>Paw Print is made up of 6 members: Danny, Sam, Glen, Josh, Fares, and Keya. We are all NC State Engineering students and working within the Engineering Entrepreneurship Program (EEP) to collaboratively create our own business. We combine our technical expertise with the business experience of the EEP faculty to generate a product with the potential to establish itself in the market.</p>
+    <p>Paw Print strives to create products that keep our furry friends as healthy and happy as possible. We all love our pets but it is hard to keep track of what is going on with them at all times. By recreating the technology we use to track our own health, we can apply them to products our pets use every day. The sensors in every product communicate with our proprietary software to provide meaningful and relevant information to the user.</p>
+</div>
+
+<!-- LOGIN + MONITORING FORM -->
 <div id="chart" class="section">
-    <h2>Login + Monitoring</h2>
+    <h2>Login / Monitor</h2>
     <div id="authForm">
-        <form id = "loginForm" onsubmit="authenticateUser(event)">\
+        <form id="loginForm">
             <label for="authUsername">Username:</label>
             <input type="text" id="authUsername" name="authUsername"><br><br>
             <label for="authPassword">Password:</label>
             <input type="password" id="authPassword" name="authPassword"><br><br>
-            <button type="button" onclick="authenticateUser()">Login</button>
+            <button type="submit">Login</button>
         </form>
     </div>
     <div id="chartContainer" style="display:none;">
@@ -158,19 +179,6 @@
         <canvas id="myChart"></canvas>
     </div>
 </div>
-
-<div id="home" class="section active">
-    <h2>Welcome to Paw Print!</h2> 
-</div>
-
-	
-<div class= "marketing-square">
-  <p>Elevate your pet's dining experience with our automatic feeders – reliable, convenient, and tailored to their needs. Say hello to hassle-free feeding and goodbye to mealtime worries!</p>
-<img src="https://cdn.pixabay.com/photo/2018/10/01/09/21/pets-3715733_640.jpg" alt="Pet Feeder" style="width: 100%; height: auto;">
-
-</div>
-
-	
 
 <!-- REGISTRATION FORM -->
 <div id="register" class="section">
@@ -190,13 +198,6 @@
         <button type="submit">Submit</button>
         <button type="reset" onclick="resetRegister()">Reset</button>
     </form>
-</div>
-
-<div id="about" class="section">
-    <h2>About Us</h2>
-    <img src="about_us_image.jpg" alt="About Us Image">
-    <p>Paw Print is made up of 6 members: Danny, Sam, Glen, Josh, Fares, and Keya. We are all NC State Engineering students and working within the Engineering Entrepreneurship Program (EEP) to collaboratively create our own business. We combine our technical expertise with the business experience of the EEP faculty to generate a product with the potential to establish itself in the market.</p>
-    <p>Paw Print strives to create products that keep our furry friends as healthy and happy as possible. We all love our pets but it is hard to keep track of what is going on with them at all times. By recreating the technology we use to track our own health, we can apply them to products our pets use every day. The sensors in every product communicate with our proprietary software to provide meaningful and relevant information to the user.</p>
 </div>
 
 <div id="product" class="section">
@@ -260,76 +261,105 @@
     }
 
     //REGISTRATION FUNCTIONS//
-        document.getElementById('registerForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission behavior
-            registerStorage();
-            registerForm();
-            alert('Thank you for registering with Paw Print!');
-        });
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+    registerUser();
+});
 
-        function registerStorage() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            localStorage.setItem('username', username);
-            localStorage.setItem('password', password);
+function registerUser() {
+    // Collect data from the form
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const petName = document.getElementById('petName').value;
+    const petCurrentWeight = document.getElementById('petCurrentWeight').value;
+    const petTargetWeight = document.getElementById('petTargetWeight').value;
+
+    // Optionally store data in localStorage (be cautious about storing sensitive data like passwords)
+    localStorage.setItem('username', username);
+    localStorage.setItem('password', password); // Note: Storing passwords in localStorage is not recommended
+    localStorage.setItem('petName', petName);
+    localStorage.setItem('petCurrentWeight', petCurrentWeight);
+    localStorage.setItem('petTargetWeight', petTargetWeight);
+
+    // Prepare data to be sent in a FormData object
+    var formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
+    formData.append('petName', petName);
+    formData.append('petCurrentWeight', petCurrentWeight);
+    formData.append('petTargetWeight', petTargetWeight);
+
+    // Perform the fetch request
+    fetch('http://127.0.0.1:5000/register', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Registration successful:', data);
+        alert('Thank you for registering with Paw Print!');
+    })
+    .catch(error => {
+        console.error('Registration failed:', error);
+        alert('Registration failed. Please try again.');
+    });
+}
 
-        function registerForm() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const petName = document.getElementById('petName').value;
-            const petCurrentWeight = document.getElementById('petCurrentWeight').value;
-            const petTargetWeight = document.getElementById('petTargetWeight').value;
-
-            const formData = new FormData();
-            formData.append('username', username);
-            formData.append('password', password);
-            formData.append('petName', petName);
-            formData.append('petCurrentWeight', petCurrentWeight);
-            formData.append('petTargetWeight', petTargetWeight);
-
-            fetch('http://127.0.0.1:5000/register', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-
-        function resetRegister() {
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('petName').value = '';
-            document.getElementById('petCurrentWeight').value = '';
-            document.getElementById('petTargetWeight').value = '';
-        }
+function resetRegister() {
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('petName').value = '';
+    document.getElementById('petCurrentWeight').value = '';
+    document.getElementById('petTargetWeight').value = '';
+}
 
     //AUTHENTICATION FUNCTIONS//
 
-    function authenticateUser() {
-        // Retrieve stored username and password
-        const storedUsername = localStorage.getItem('username');
-        const storedPassword = localStorage.getItem('password');
+document.getElementById('authForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+    authenticateUser();
+});
 
-        // Retrieve entered username and password
-        const enteredUsername = document.getElementById('authUsername').value;
-        const enteredPassword = document.getElementById('authPassword').value;
+function authenticateUser() {
+    const authUsername = document.getElementById('authUsername').value;
+    const authPassword = document.getElementById('authPassword').value;
 
-        // Check if entered credentials match stored credentials
-        if (enteredUsername === storedUsername && enteredPassword === storedPassword) {
-            // Show the chart container
-            document.getElementById('chartContainer').style.display = 'block';
-            // Optionally, you can clear the authentication form
-            document.getElementById('authForm').style.display = 'none';
-        } else {
-            alert('Invalid username or password. Please try again.');
+    // Storing in localStorage (not recommended for sensitive data)
+    localStorage.setItem('authUsername', authUsername);
+    localStorage.setItem('authPassword', authPassword);
+
+    // Prepare data to be sent in a FormData object
+    var formData = new FormData();
+    formData.append('authUsername', authUsername);
+    formData.append('authPassword', authPassword);
+
+    // Perform the fetch request
+    fetch('http://127.0.0.1:5000/login_endpoint', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Server responded with a non-200 status: ' + response.status);
         }
-    }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Login successful:', data);
+        alert('You are logged in!'); // Alert the user upon successful login
+        // Additional actions based on response, like showing the chart
+        // document.getElementById('chartContainer').style.display = 'block';
+    })
+    .catch(error => {
+        console.error('Login failed:', error);
+        alert('Login failed. Please try again.'); // Alert the user upon failure
+    });
+}
     
     function validateShippingAddress() {
     const fullName = document.getElementById('fullName').value.trim();

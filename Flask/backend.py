@@ -6,6 +6,9 @@ import csv
 
 app = Flask(__name__)
 
+# Global dictionary to store user data
+users = {}
+
 # Variables to store user input data
 user_data = {
     'pet_type': None,
@@ -38,32 +41,49 @@ def get_processed_data():
 # Route that receives REGISTRATION data from frontend
 @app.route('/register', methods=['POST'])
 def register():
-    # Check if the request contains form data
     if request.form:
         username = request.form.get('username')
-        password = request.form.get('password')
+        password = request.form.get('password')  # Remember, storing passwords like this is not secure
         pet_name = request.form.get('petName')
         pet_current_weight = request.form.get('petCurrentWeight')
         pet_target_weight = request.form.get('petTargetWeight')
 
-        # Process or store the data here
+        # Store user data
+        users[username] = {
+            'password': password,
+            'pet_name': pet_name,
+            'pet_current_weight': pet_current_weight,
+            'pet_target_weight': pet_target_weight
+        }
+
         print("Received registration data:")
         print("Username:", username)
-        print("Password:", password)  # Note: Printing passwords is not a good practice for production
+        print("Password:", password)
         print("Pet Name:", pet_name)
         print("Pet Current Weight:", pet_current_weight)
         print("Pet Target Weight:", pet_target_weight)
 
-        # For demonstration, let's just return the received data as JSON
         return jsonify({
             'username': username,
-            'password': password,  # Be cautious with real passwords!
+            'password': password,
             'pet_name': pet_name,
             'pet_current_weight': pet_current_weight,
             'pet_target_weight': pet_target_weight
         }), 200
     else:
         return jsonify({'error': 'No form data received'}), 400
+
+# Route that handles login
+@app.route('/login_endpoint', methods=['POST'])
+def login():
+    username = request.form.get('authUsername')
+    password = request.form.get('authPassword')
+
+    # Check if username exists and password matches
+    if username in users and users[username]['password'] == password:
+        return jsonify({'message': 'Login successful'}), 200
+    else:
+        return jsonify({'error': 'Invalid username or password'}), 401
 
 # Function to read and parse data_log.csv
 def read_csv_data():

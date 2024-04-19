@@ -237,7 +237,7 @@ void setupLoadCells(void) {
     if (LoadCell_2.getTareTimeoutFlag()) {
         //Serial.println("Timeout, check MCU>HX711 no.2 wiring and pin designations");
     }
-    LoadCell_1.setCalFactor(calibrationValue_1); // user set calibration value (float)
+    LoadCell_1.setCalFactor(189.82); // user set calibration value (float)
     LoadCell_2.setCalFactor(calibrationValue_2); // user set calibration value (float)
     //Serial.println("Startup is complete");
 }

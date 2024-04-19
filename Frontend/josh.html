@@ -117,7 +117,31 @@
 
         footer p {
             margin: 0; /* Remove default margin */
-        }    
+        }   
+
+	.container {
+   	 display: flex;
+	}
+
+	.chart-container {
+   	 flex: 1; /* Take up the left half of the container */
+	}
+
+	.api-data-container {
+    	flex: 1; /* Take up the right half of the container */
+    	padding-left: 20px; /* Add some space between the chart and the API data */
+	}
+
+	/* Adjustments to make the chart and API data divs look nice */
+	#chartContainer {
+    	margin-top: 20px; /* Add space above the chart */
+	}
+
+	#apiData {
+    	background-color: #f9f9f9;
+    	padding: 20px;
+    	border-radius: 5px;
+	}    
     </style>
 </head>
 <body> 
@@ -137,18 +161,27 @@
 </header>
 
 <div id="chart" class="section">
-    <h2>Log In | Monitor Your Pet</h2>
-    <div id="authForm">
-        <label for="authUsername">Username:</label>
-        <input type="text" id="authUsername" name="authUsername"><br><br>
-        <label for="authPassword">Password:</label>
-        <input type="password" id="authPassword" name="authPassword"><br><br>
-        <button type="button" onclick="authenticateUser()">Login</button>
-        <button type="reset" onclick="resetLogin()">Reset</button>
-    </div>
-    <div id="chartContainer" style="display:none;">
-        <!-- Chart will be rendered here -->
-        <canvas id="myChart"></canvas>
+    <div class="container">
+        <div class="chart-container">
+            <h2>Log In | Monitor Your Pet</h2>
+            <div id="authForm">
+                <label for="authUsername">Username:</label>
+                <input type="text" id="authUsername" name="authUsername"><br><br>
+                <label for="authPassword">Password:</label>
+                <input type="password" id="authPassword" name="authPassword"><br><br>
+                <button type="button" onclick="authenticateUser()">Login</button>
+                <button type="reset" onclick="resetLogin()">Reset</button>
+            </div>
+            <div id="chartContainer" style="display:none;">
+                <!-- Chart will be rendered here -->
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+        <div class="api-data-container">
+            <!-- Div for displaying data from Flask API -->
+		<p>Test string for Fares</p>
+            <div id="apiData"></div>
+        </div>
     </div>
 </div>
 

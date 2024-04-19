@@ -1,7 +1,7 @@
 from datetime import datetime
 import time
 
-def calculation(petName, petWeight, targetWeight. foodEaten, waterEaten):
+def calculation(petName, petWeight, targetWeight, foodEaten, waterEaten):
   dietFactor = targetWeight/petWeight #returns correction factor in diet relative to target weight
   #if targetWeight < petWeight then dietFactor < 1 to indicate less food
 

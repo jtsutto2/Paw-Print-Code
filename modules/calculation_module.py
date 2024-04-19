@@ -19,6 +19,10 @@ def dailyGoal(petWeight, targetWeight):
     baseWaterIntakePerLb = 80 / 2.20462   # mL of water per pound of body weight
     adjustmentFactor = 0.2                # Adjust food intake by 20%
 
+    # Convert petWeight and targetWeight from string to float
+    petWeight = float(petWeight)
+    targetWeight = float(targetWeight)
+
     # Calculate base food intake based on current weight
     foodGoal = petWeight * baseFoodIntakePerLb
 

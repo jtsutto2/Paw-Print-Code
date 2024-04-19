@@ -19,19 +19,6 @@ user_data = {
     # Add more as needed
 }
 
-# Route for the main page and handling user input form
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    if request.method == 'POST':
-        # Processing form data and updating user_data dictionary
-        user_data['pet_type'] = request.form.get('petType')
-        user_data['weight'] = request.form.get('weight')
-        # Process and store additional form inputs as needed
-        
-        # Optionally, redirect to another page after POST
-        return render_template('success.html')  # Assuming you have a template for successful form submission
-    return render_template('index.html')  # Show the input form
-
 # API route for processing and returning calculated data
 @app.route('/api/data', methods=['GET'])
 def get_processed_data():
@@ -102,6 +89,18 @@ def read_csv_data():
             csv_data.append(row)
     return csv_data
 
+# Route for the main page and handling user input form
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        # Processing form data and updating user_data dictionary
+        user_data['pet_type'] = request.form.get('petType')
+        user_data['weight'] = request.form.get('weight')
+        # Process and store additional form inputs as needed
+        
+        # Optionally, redirect to another page after POST
+        return render_template('success.html')  # Assuming you have a template for successful form submission
+    return render_template('index.html')  # Show the input form
 # Placeholder for calculation_module functionality
 # Implement this module based on your project's specific requirements
 # This could include functions for processing data, performing calculations based on user inputs and CSV data, etc.

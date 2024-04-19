@@ -410,6 +410,7 @@ function updateDietRecommendations() {
     .then(data => {
         if (data.message) {
             document.getElementById('dietAdvice').textContent = data.message;
+            console.log('Message received:', data.message); // Log the message received from the server
         } else {
             document.getElementById('dietAdvice').textContent = 'Error fetching data.';
         }

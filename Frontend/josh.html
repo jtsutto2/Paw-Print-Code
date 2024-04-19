@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,17 +10,24 @@
         body {
             font-family: 'Lato', Times, serif;
             background-color: #faeac8;
-            margin: 10;
-            padding: 10;
+            margin: 0;
+            padding: 0;
+	    padding-top: 120px; /* Adjust according to header height (100px) plus extra padding */
         }
         
         /* Style for the header */
         header {
             background-color: #086680;
 	    color: #ffffff;
+	    position: fixed;
 	    font-family: 'Lato', Times, serif;
 	    width: 100%; /* Set width to 100% */
             margin: 0; /* Remove default margin */
+	    padding: 10;
+	    top: 0;
+	    left: 0;
+	    height: 100px;
+	    box-sizing: border-box;
             text-align: center; /* Align the content inside header to center */
         } 
 	
@@ -48,28 +56,18 @@
             padding: 20px;
             margin-top: 20px;
             font-family: 'Lato', Times, serif;
-            background-color: #fceac8;
+            background-color: #f9eac8;
         }
 
         .active {
             display: block;
         }
 
-        /* Style for the home page section */
-        #home {
-            display: block;
-        }
-
-        #home p {
-            font-size: 1.2em;
-            text-align: center;
-        }
-
     /* Style for the navigation links */
         nav ul {
             list-style-type: none;
             padding: 0;
-            margin: 0;
+	    margin-bottom: 20px; /* Add margin to push the links up */
 	    color: #ffffff;
             display: inline; /* Set list items to display inline */
         }
@@ -78,6 +76,7 @@
             display: inline; /* Display list items inline */
 	    color: #ffffff;
             margin-right: 20px;
+	    padding-bottom: 20px; /* Add padding to the bottom */
         }
 
         nav ul li a {
@@ -94,7 +93,7 @@
 	footer {
             background-color: #563C2F; /* Set background color */
             color: #ffffff; /* Set text color */
-            padding: 0; /* Added padding top and bottom */
+            padding: 20px 0; /* Added padding top and bottom */
             text-align: center;
             width: 100%; /* Set width to 100% */
             position: fixed; /* Fix the footer at the bottom */
@@ -103,9 +102,7 @@
 
         footer p {
             margin: 0; /* Remove default margin */
-        }
-  
-	    
+        }    
     </style>
 </head>
 <body> 
@@ -114,50 +111,37 @@
     <h1 id="mainTitle">Paw Print</h1>
     <!-- Navigation or other header content can be added here -->
     <nav>
-        <ul id="navLinks">
-            <li><a href="#" onclick="showSection('home')">Home</a></li>
-	    <li><a href="#" onclick="showSection('about')">About Us</a></li>
-	    <li><a href="#" onclick="showSection('product')">Buy the Paw Print Palace</a></li>
-            <li><a href="#" onclick="showSection('register')">Register a Pet</a></li>
- 	    <li><a href="#" onclick="showSection('chart')">Monitor your Pet</a></li>
-        </ul>
-    </nav>
+    <ul id="navLinks">
+        <li><a href="#" onclick="showSection('home')">Home</a></li>
+        <li><a href="#" onclick="showSection('about')">About Us</a></li>
+        <li><a href="#" onclick="showSection('product')">Buy the Paw Print Palace</a></li>
+        <li><a href="#" onclick="showSection('register')">Register a Pet</a></li>
+        <li><a href="#" onclick="showSection('chart')">Monitor your Pet</a></li>
+    </ul>
+</nav>
 </header>
 
-<!-- FORMS + SECTIONS LAYOUT -->
-
-<!-- Home Page -->
-<div id="home" class="section active">
-    <h2>Welcome to Paw Print!</h2>
-    <p>Elevate your pet's dining experience with our automatic feeders – reliable, convenient, and tailored to their needs. Say hello to hassle-free feeding and goodbye to mealtime worries!</p>
-    <img src="https://cdn.pixabay.com/photo/2018/10/01/09/21/pets-3715733_640.jpg" alt="Pet Feeder" style="width: 100%; height: auto;">
-</div>
-
-<!-- About Us Page -->
-<div id="about" class="section">
-    <h2>About Us</h2>
-    <img src="about_us_image.jpg" alt="About Us Image">
-    <p>Paw Print is made up of 6 members: Danny, Sam, Glen, Josh, Fares, and Keya. We are all NC State Engineering students and working within the Engineering Entrepreneurship Program (EEP) to collaboratively create our own business. We combine our technical expertise with the business experience of the EEP faculty to generate a product with the potential to establish itself in the market.</p>
-    <p>Paw Print strives to create products that keep our furry friends as healthy and happy as possible. We all love our pets but it is hard to keep track of what is going on with them at all times. By recreating the technology we use to track our own health, we can apply them to products our pets use every day. The sensors in every product communicate with our proprietary software to provide meaningful and relevant information to the user.</p>
-</div>
-
-<!-- LOGIN + MONITORING FORM -->
 <div id="chart" class="section">
-    <h2>Login / Monitor</h2>
-    <form id="loginForm">
+    <h2>Monitor Your Pet</h2>
+    <div id="authForm">
         <label for="authUsername">Username:</label>
         <input type="text" id="authUsername" name="authUsername"><br><br>
         <label for="authPassword">Password:</label>
         <input type="password" id="authPassword" name="authPassword"><br><br>
-        <button type="submit">Login</button>
-    </form>
+        <button type="button" onclick="authenticateUser()">Login</button>
+    </div>
     <div id="chartContainer" style="display:none;">
         <!-- Chart will be rendered here -->
         <canvas id="myChart"></canvas>
     </div>
 </div>
 
-<!-- REGISTRATION FORM -->
+<div id="home" class="section active">
+    <h2>Welcome to Paw Print!</h2>
+    <p>Elevate your pet's dining experience with our automatic feeders – reliable, convenient, and tailored to their needs. Say hello to hassle-free feeding and goodbye to mealtime worries!</p>
+    <img src="https://cdn.pixabay.com/photo/2018/10/01/09/21/pets-3715733_640.jpg" alt="Pet Feeder" style="width: 100%; height: auto;">
+</div>
+
 <div id="register" class="section">
     <h2>Register a Pet</h2>
     <form id="registerForm">
@@ -172,9 +156,16 @@
         <label for="petTargetWeight">Pet Target Weight:</label>
         <input type="text" id="petTargetWeight" name="petTargetWeight"><br><br>
         <!-- Include other input fields for pet information -->
-        <button type="submit">Submit</button>
-        <button type="reset" onclick="resetRegister()">Reset</button>
+        <button type="submit" onclick="registerUser();alert('Thank you for registering with Paw Print!')">Submit</button>
+        <button type="reset" onclick="resetForm()">Reset</button>
     </form>
+</div>
+
+<div id="about" class="section">
+    <h2>About Us</h2>
+    <img src="about_us_image.jpg" alt="About Us Image">
+    <p>Paw Print is made up of 6 members: Danny, Sam, Glen, Josh, Fares, and Keya. We are all NC State Engineering students and working within the Engineering Entrepreneurship Program (EEP) to collaboratively create our own business. We combine our technical expertise with the business experience of the EEP faculty to generate a product with the potential to establish itself in the market.</p>
+    <p>Paw Print strives to create products that keep our furry friends as healthy and happy as possible. We all love our pets but it is hard to keep track of what is going on with them at all times. By recreating the technology we use to track our own health, we can apply them to products our pets use every day. The sensors in every product communicate with our proprietary software to provide meaningful and relevant information to the user.</p>
 </div>
 
 <div id="product" class="section">
@@ -224,121 +215,51 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     function showSection(sectionId) {
-        // Hide the home section
-        document.getElementById('home').classList.remove('active');
-
-        // Hide all sections
-        const sections = document.getElementsByClassName('section');
-        for (let i = 0; i < sections.length; i++) {
-            sections[i].classList.remove('active');
-        }
-
-        // Show the selected section
-        document.getElementById(sectionId).classList.add('active');
+    // Hide all sections
+    const sections = document.getElementsByClassName('section');
+    for (let i = 0; i < sections.length; i++) {
+        sections[i].classList.remove('active');
     }
-    
 
- ////////////////////REGISTRATION FUNCTIONS////////////////////////
-document.getElementById('registerForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission behavior
-    registerUser();
-});
+    // Show the selected section
+    const selectedSection = document.getElementById(sectionId);
+    selectedSection.classList.add('active');
 
-function registerUser() {
-    // Collect data from the form
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    const petName = document.getElementById('petName').value;
-    const petCurrentWeight = document.getElementById('petCurrentWeight').value;
-    const petTargetWeight = document.getElementById('petTargetWeight').value;
+    // If the selected section is not the "Home" section, hide the "Home" section
+    if (sectionId !== 'home') {
+        document.getElementById('home').classList.remove('active');
+    }
+}
 
-    // Optionally store data in localStorage (be cautious about storing sensitive data like passwords)
-    localStorage.setItem('username', username);
-    localStorage.setItem('password', password); // Note: Storing passwords in localStorage is not recommended
-    localStorage.setItem('petName', petName);
-    localStorage.setItem('petCurrentWeight', petCurrentWeight);
-    localStorage.setItem('petTargetWeight', petTargetWeight);
+    function registerUser() {
+        // Retrieve username and password from the form
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
 
-    // Prepare data to be sent in a FormData object
-    var formData = new FormData();
-    formData.append('username', username);
-    formData.append('password', password);
-    formData.append('petName', petName);
-    formData.append('petCurrentWeight', petCurrentWeight);
-    formData.append('petTargetWeight', petTargetWeight);
+        // Store username and password securely (you can use local storage, session storage, or send to server for backend verification)
+        localStorage.setItem('username', username);
+        localStorage.setItem('password', password);
+    }
 
-    // Perform the fetch request
-    fetch('http://127.0.0.1:5000/register', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok: ' + response.statusText);
+    function authenticateUser() {
+        // Retrieve stored username and password
+        const storedUsername = localStorage.getItem('username');
+        const storedPassword = localStorage.getItem('password');
+
+        // Retrieve entered username and password
+        const enteredUsername = document.getElementById('authUsername').value;
+        const enteredPassword = document.getElementById('authPassword').value;
+
+        // Check if entered credentials match stored credentials
+        if (enteredUsername === storedUsername && enteredPassword === storedPassword) {
+            // Show the chart container
+            document.getElementById('chartContainer').style.display = 'block';
+            // Optionally, you can clear the authentication form
+            document.getElementById('authForm').style.display = 'none';
+        } else {
+            alert('Invalid username or password. Please try again.');
         }
-        return response.json(); // This returns a promise that resolves with the result of parsing the body text as JSON
-    })
-    .then(data => {
-        console.log('Received data:', data);
-        console.log('Registration successful:', data);
-        alert('Thank you for registering with Paw Print!');
-    })
-    .catch(error => {
-        console.error('Registration failed due to:', error);
-        //alert('Registration failed due to: ' + error.message); // Display the error message to the user
-    });
-}
-
-function resetRegister() {
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
-    document.getElementById('petName').value = '';
-    document.getElementById('petCurrentWeight').value = '';
-    document.getElementById('petTargetWeight').value = '';
-}
-
-//////////////AUTHENTICATION FUNCTIONS////////////////
-
-document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission behavior
-    authenticateUser();
-});
-
-function authenticateUser() {
-    const authUsername = document.getElementById('authUsername').value;
-    const authPassword = document.getElementById('authPassword').value;
-
-    // Storing in localStorage (not recommended for sensitive data)
-    localStorage.setItem('authUsername', authUsername);
-    localStorage.setItem('authPassword', authPassword);
-
-    // Prepare data to be sent in a FormData object
-    var formData = new FormData();
-    formData.append('authUsername', authUsername);
-    formData.append('authPassword', authPassword);
-
-    // Perform the fetch request
-    fetch('http://127.0.0.1:5000/login_endpoint', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Server responded with a non-200 status: ' + response.statusText);
-        }
-        return response.json(); // Parse the JSON in the response
-    })
-    .then(data => {
-        console.log('Login successful:', data);
-        alert('You are logged in!'); // Alert the user upon successful login
-        // Additional actions based on response, like showing the chart
-        document.getElementById('chartContainer').style.display = 'block';
-    })
-    .catch(error => {
-        console.error('Login failed:', error);
-        //alert('Login failed. Please try again. ' + error.message); // Provide error message for better debugging feedback
-    });
-}
+    }
     
     function validateShippingAddress() {
     const fullName = document.getElementById('fullName').value.trim();
@@ -418,6 +339,29 @@ function authenticateUser() {
 
 
 
+    function submitForm() {
+        const petName = document.getElementById('petName').value;
+        const petCurrentWeight = document.getElementById('petCurrentWeight').value;
+        const petTargetWeight = document.getElementById('petTargetWeight').value;
+
+        const formData = new FormData();
+        formData.append('petName', petName);
+        formData.append('petCurrentWeight', petCurrentWeight);
+        formData.append('petTargetWeight', petTargetWeight);
+
+        fetch('/submit_pet_info', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            renderChart(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
     function resetForm() {
         document.getElementById('petName').value = ''; // Clear the pet name input field
         document.getElementById('petCurrentWeight').value = ''; // Clear the pet current weight input field
@@ -439,16 +383,18 @@ function authenticateUser() {
     function renderChart(data) {
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: ['petName'],
+                labels: ['Pet 1', 'Pet 2', 'Pet 3'],
                 datasets: [{
                     label: 'Food Eaten',
-                    data: [data.petName.food],
+                    data: [data.pet1.food, data.pet2.food, data.pet3.food],
                     label: 'Water Drank',
-                    data: [data.petName.water],
-                    label: 'Other',
-		    data: [data.petName.other]
+                    data: [data.pet1.water, data.pet2.water, data.pet3.water],
+                    label: 'Food Goal Met',
+                    data: [data.pet1.goal1, data.pet2.goal1, data.pet3.goal1],
+                    label: 'Water Goal Met',
+                    data: [data.pet1.goal2, data.pet2.goal2, data.pet3.goal2],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',

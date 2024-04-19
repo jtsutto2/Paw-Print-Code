@@ -122,7 +122,7 @@
 </header>
 
 <div id="chart" class="section">
-    <h2>Monitor Your Pet</h2>
+    <h2>Log In | Monitor Your Pet</h2>
     <div id="authForm">
         <label for="authUsername">Username:</label>
         <input type="text" id="authUsername" name="authUsername"><br><br>
@@ -231,35 +231,107 @@
     }
 }
 
-    function registerUser() {
-        // Retrieve username and password from the form
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+ ////////////////////REGISTRATION FUNCTIONS////////////////////////
+ document.getElementById('registerForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+    registerUser();
+});
 
-        // Store username and password securely (you can use local storage, session storage, or send to server for backend verification)
-        localStorage.setItem('username', username);
-        localStorage.setItem('password', password);
-    }
+function registerUser() {
+    // Collect data from the form
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const petName = document.getElementById('petName').value;
+    const petCurrentWeight = document.getElementById('petCurrentWeight').value;
+    const petTargetWeight = document.getElementById('petTargetWeight').value;
 
-    function authenticateUser() {
-        // Retrieve stored username and password
-        const storedUsername = localStorage.getItem('username');
-        const storedPassword = localStorage.getItem('password');
+    // Optionally store data in localStorage (be cautious about storing sensitive data like passwords)
+    localStorage.setItem('username', username);
+    localStorage.setItem('password', password); // Note: Storing passwords in localStorage is not recommended
+    localStorage.setItem('petName', petName);
+    localStorage.setItem('petCurrentWeight', petCurrentWeight);
+    localStorage.setItem('petTargetWeight', petTargetWeight);
 
-        // Retrieve entered username and password
-        const enteredUsername = document.getElementById('authUsername').value;
-        const enteredPassword = document.getElementById('authPassword').value;
+    // Prepare data to be sent in a FormData object
+    var formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
+    formData.append('petName', petName);
+    formData.append('petCurrentWeight', petCurrentWeight);
+    formData.append('petTargetWeight', petTargetWeight);
 
-        // Check if entered credentials match stored credentials
-        if (enteredUsername === storedUsername && enteredPassword === storedPassword) {
-            // Show the chart container
-            document.getElementById('chartContainer').style.display = 'block';
-            // Optionally, you can clear the authentication form
-            document.getElementById('authForm').style.display = 'none';
-        } else {
-            alert('Invalid username or password. Please try again.');
+    // Perform the fetch request
+    fetch('http://127.0.0.1:5000/register', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.statusText);
         }
-    }
+        return response.json(); // This returns a promise that resolves with the result of parsing the body text as JSON
+    })
+    .then(data => {
+        console.log('Received data:', data);
+        console.log('Registration successful:', data);
+        alert('Thank you for registering with Paw Print!');
+    })
+    .catch(error => {
+        console.error('Registration failed due to:', error);
+        //alert('Registration failed due to: ' + error.message); // Display the error message to the user
+    });
+}
+
+function resetRegister() {
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('petName').value = '';
+    document.getElementById('petCurrentWeight').value = '';
+    document.getElementById('petTargetWeight').value = '';
+}
+
+ //////////////AUTHENTICATION FUNCTIONS////////////////
+
+document.getElementById('authForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+    authenticateUser();
+});
+
+function authenticateUser() {
+    const authUsername = document.getElementById('authUsername').value;
+    const authPassword = document.getElementById('authPassword').value;
+
+    // Storing in localStorage (not recommended for sensitive data)
+    localStorage.setItem('authUsername', authUsername);
+    localStorage.setItem('authPassword', authPassword);
+
+    // Prepare data to be sent in a FormData object
+    var formData = new FormData();
+    formData.append('authUsername', authUsername);
+    formData.append('authPassword', authPassword);
+
+    // Perform the fetch request
+    fetch('http://127.0.0.1:5000/login_endpoint', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Server responded with a non-200 status: ' + response.statusText);
+        }
+        return response.json(); // Parse the JSON in the response
+    })
+    .then(data => {
+        console.log('Login successful:', data);
+        alert('You are logged in!'); // Alert the user upon successful login
+        // Additional actions based on response, like showing the chart
+        document.getElementById('chartContainer').style.display = 'block';
+    })
+    .catch(error => {
+        console.error('Login failed:', error);
+        //alert('Login failed. Please try again. ' + error.message); // Provide error message for better debugging feedback
+    });
+}
     
     function validateShippingAddress() {
     const fullName = document.getElementById('fullName').value.trim();

@@ -329,13 +329,12 @@ function registerUser() {
         console.log('Received data:', data);
         console.log('Registration successful:', data);
         alert('Thank you for registering with Paw Print!');
+        updateDietRecommendations();
     })
     .catch(error => {
         console.error('Registration failed due to:', error);
         alert('Registration failed due to: ' + error.message); // Display the error message to the user
     });
-
-    updateDietRecommendations()
 }
 
 function resetRegister() {

@@ -468,18 +468,16 @@ function authenticateUser() {
     function renderChart(data) {
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
-                labels: ['Pet 1', 'Pet 2', 'Pet 3'],
+                labels: ['petName'],
                 datasets: [{
                     label: 'Food Eaten',
-                    data: [data.pet1.food, data.pet2.food, data.pet3.food],
+                    data: [data.petName.food],
                     label: 'Water Drank',
-                    data: [data.pet1.water, data.pet2.water, data.pet3.water],
-                    label: 'Food Goal Met',
-                    data: [data.pet1.goal1, data.pet2.goal1, data.pet3.goal1],
-                    label: 'Water Goal Met',
-                    data: [data.pet1.goal2, data.pet2.goal2, data.pet3.goal2],
+                    data: [data.petName.water],
+                    label: 'Other',
+		    data: [data.petName.other]
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',

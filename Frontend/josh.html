@@ -401,8 +401,12 @@ function resetLogin() {
 function updateDietRecommendations() {
     fetch('http://127.0.0.1:5000/calculate_intake', {
         method: 'POST',
-        // No body is included if no specific data needs to be sent
+        headers: {
+            'Content-Type': 'application/json'  // Ensures that the content type is application/json
+        }
     })
+        // No body is included if no specific data needs to be sent
+ 
     .then(response => response.json())
     .then(data => {
         if (data.message) {

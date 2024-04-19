@@ -1,7 +1,7 @@
 from datetime import datetime
 import time
 
-def calculation(petName, petWeight, targetWeight. foodEaten, waterEaten):
+def calculation(petName, petWeight, targetWeight, foodEaten, waterEaten):
   dietFactor = targetWeight/petWeight #returns correction factor in diet relative to target weight
   #if targetWeight < petWeight then dietFactor < 1 to indicate less food
 
@@ -12,6 +12,30 @@ def calculation(petName, petWeight, targetWeight. foodEaten, waterEaten):
 
   foodNeed = str(petName) + " needs " + str(foodGoal) + "g of food"
   waterNeed = str(petName) + " needs " + str(waterGoal) + "mL of food"
+
+def dailyGoal(petWeight, targetWeight):
+    # Constants for food and water calculation
+    baseFoodIntakePerLb = 50 / 2.20462    # grams of food per pound of body weight
+    baseWaterIntakePerLb = 80 / 2.20462   # mL of water per pound of body weight
+    adjustmentFactor = 0.2                # Adjust food intake by 20%
+
+    # Calculate base food intake based on current weight
+    foodGoal = petWeight * baseFoodIntakePerLb
+
+    # Calculate base water intake based on current weight
+    waterGoal = petWeight * baseWaterIntakePerLb
+
+    # Adjust food intake based on weight difference
+    weightDifference = targetWeight - petWeight
+
+    if weightDifference > 0:
+        # Increase food intake if target weight is greater than current weight
+        foodGoal *= (1 + adjustmentFactor)
+    elif weightDifference < 0:
+        # Decrease food intake if target weight is less than current weight
+        foodGoal *= (1 - adjustmentFactor)
+
+    return foodGoal, waterGoal
 
 def consumptionProgress(foodEaten, waterDrank, foodGoal, waterGoal, petName):
   foodProgress = (foodEaten / foodGoal) * 100; #create percent of goal

@@ -10,9 +10,15 @@ def calculation(petName, petWeight, targetWeight. foodEaten, waterEaten):
   
   consumptionProgress(foodEaten, waterDrank, foodGoal, waterGoal, petName)
 
+  foodNeed = str(petName) + " needs " + str(foodGoal) + "g of food"
+  waterNeed = str(petName) + " needs " + str(waterGoal) + "mL of food"
+
 def consumptionProgress(foodEaten, waterDrank, foodGoal, waterGoal, petName):
   foodProgress = (foodEaten / foodGoal) * 100; #create percent of goal
   waterProgress = (waterDrank / waterGoal) * 100;
+
+  foodString = str(petName) + " has eaten " + str(foodProgress) + "% of their daily food goal"
+  waterString = str(petName) + " has drank " + str(waterProgress) + "% of their daily water goal"
 
   goalDict1 = { #creates a dictionary with the date: true/false format
     'Date MM/DD/YYYY': 'Goal met? (true/false)'

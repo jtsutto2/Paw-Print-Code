@@ -84,6 +84,14 @@ def register():
         }), 200
     else:
         return jsonify({'error': 'No form data received'}), 400
+    
+@app.route('/chart_endpoint')
+def chart_data():
+    try:
+        pet_data = read_csv_data()
+        return jsonify(petData=pet_data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Route that handles login
 @app.route('/login_endpoint', methods=['POST'])
@@ -108,12 +116,31 @@ def calculate_intake():
 # Function to read and parse data_log.csv
 def read_csv_data():
     csv_data = []
-    # Use the absolute path to the CSV file
     csv_file_path = '/home/pawprint/Documents/csv_output/data_log.csv'
+    initial_time = None  # To store the first timestamp
+
     with open(csv_file_path, mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         for row in csv_reader:
-            csv_data.append(row)
+            # Parse the current timestamp
+            current_time = datetime.strptime(row['Time (EST)'], '%H:%M:%S')
+
+            if initial_time is None:
+                # Set the first timestamp
+                initial_time = current_time
+                print('First timestamp: ', initial_time) #debug
+                base_seconds = initial_time.hour * 3600 + initial_time.minute * 60 + initial_time.second
+
+            # Calculate the number of seconds from the first timestamp
+            current_seconds = current_time.hour * 3600 + current_time.minute * 60 + current_time.second
+            seconds_since_first = current_seconds - base_seconds
+            print('T value is: ', seconds_since_first) #debug
+
+            csv_data.append({
+                'timeInSeconds': int(seconds_since_first),  # Explicitly cast to int to ensure type consistency
+                'foodEaten': float(row['foodEaten']),
+                'waterDrank': float(row['waterDrank'])
+            })
     return csv_data
 
 # Route for the main page and handling user input form

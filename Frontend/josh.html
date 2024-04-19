@@ -517,63 +517,75 @@ function updateDietRecommendations() {
     }
 
     function renderChart() {
-            fetch('http://127.0.0.1:5000/chart_endpoint') // Assuming your Flask API endpoint is /api/data
-                .then(response => response.json())
-                .then(data => {
-                    const petData = data.petData;
-                    const timesInSeconds = petData.map(entry => entry.timeInSeconds);
-                    const foodData = petData.map(entry => entry.foodEaten);
-                    const waterData = petData.map(entry => entry.waterDrank);
+    fetch('http://127.0.0.1:5000/chart_endpoint')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data.petData) {
+                throw new Error('No pet data available');
+            }
 
-                    // Get existing chart instance or create a new one
-                    const ctx = document.getElementById('petDataChart').getContext('2d');
-                    if(window.petDataChart) {
-                        // Update chart data
-                        window.petDataChart.data.labels = timesInSeconds;
-                        window.petDataChart.data.datasets[0].data = foodData;
-                        window.petDataChart.data.datasets[1].data = waterData;
-                        window.petDataChart.update();
-                    } else {
-                        // Create new chart
-                        window.petDataChart = new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: timesInSeconds,
-                                datasets: [{
-                                    label: 'Food Eaten',
-                                    data: foodData,
-                                    borderColor: 'blue',
-                                    backgroundColor: 'rgba(0, 0, 255, 0.1)',
-                                    borderWidth: 1
-                                }, {
-                                    label: 'Water Drank',
-                                    data: waterData,
-                                    borderColor: 'green',
-                                    backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                                    borderWidth: 1
-                                }]
+            const petData = data.petData;
+            const timesInSeconds = petData.map(entry => entry.timeInSeconds);
+            const foodData = petData.map(entry => entry.foodEaten);
+            const waterData = petData.map(entry => entry.waterDrank);
+
+            const ctx = document.getElementById('petDataChart').getContext('2d');
+            if (window.petDataChart) {
+                // Update chart if it already exists
+                window.petDataChart.data.labels = timesInSeconds;
+                window.petDataChart.data.datasets[0].data = foodData;
+                window.petDataChart.data.datasets[1].data = waterData;
+                window.petDataChart.update();
+            } else {
+                // Create a new chart instance if it doesn't exist
+                window.petDataChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: timesInSeconds,
+                        datasets: [{
+                            label: 'Food Eaten',
+                            data: foodData,
+                            borderColor: 'blue',
+                            backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                            borderWidth: 1
+                        }, {
+                            label: 'Water Drank',
+                            data: waterData,
+                            borderColor: 'green',
+                            backgroundColor: 'rgba(0, 255, 0, 0.1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                title: {
+                                    display: true,
+                                    text: 'Time (seconds)'
+                                }
                             },
-                            options: {
-                                scales: {
-                                    x: {
-                                        type: 'linear',
-                                        title: {
-                                            display: true,
-                                            text: 'Time (seconds)'
-                                        }
-                                    },
-                                    y: {
-                                        title: {
-                                            display: true,
-                                            text: 'Amount'
-                                        }
-                                    }
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Amount'
                                 }
                             }
-                        });
+                        }
                     }
                 });
-        }
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            document.getElementById('petDataChart').textContent = 'Failed to load chart data.';
+        });
+    }
 
         // Call renderChart initially
         renderChart();

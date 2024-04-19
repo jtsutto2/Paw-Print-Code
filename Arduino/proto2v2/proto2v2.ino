@@ -30,7 +30,7 @@ void loop() {
 
     // The following reads the scales in cycles and uses that information to track dietary trends
     if (currentTime() >= readingCooldown) {          // Readings will only run every 200ms
-``````` // Get a current reading of food and water scales
+     // Get a current reading of food and water scales
         readFoodScale(foodReading);
         readWaterScale(waterReading);
 
@@ -181,10 +181,7 @@ unsigned long cooldown (unsigned long delay) {
 
 // Used to reset ReadingA and ReadingB
 void resetReadings(void) {
-    firstReadingA = RESET;
-    secondReadingA = RESET;
-    firstReadingB = RESET;
-    secondReadingB = RESET;
+    
 }
 
 // Initializing Servo Motors

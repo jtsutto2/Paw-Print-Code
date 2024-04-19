@@ -278,7 +278,7 @@ function registerUser() {
     })
     .catch(error => {
         console.error('Registration failed due to:', error);
-        //alert('Registration failed due to: ' + error.message); // Display the error message to the user
+        alert('Registration failed due to: ' + error.message); // Display the error message to the user
     });
 }
 
@@ -295,6 +295,7 @@ function resetRegister() {
 document.getElementById('authForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent the default form submission behavior
     authenticateUser();
+    resetLogin();
 });
 
 function authenticateUser() {
@@ -329,8 +330,13 @@ function authenticateUser() {
     })
     .catch(error => {
         console.error('Login failed:', error);
-        //alert('Login failed. Please try again. ' + error.message); // Provide error message for better debugging feedback
+        alert('Login failed. Please try again. ' + error.message); // Provide error message for better debugging feedback
     });
+}
+
+function resetLogin() {
+    document.getElementById('autUsername').value = '';
+    document.getElementById('authPassword').value = '';
 }
     
     function validateShippingAddress() {

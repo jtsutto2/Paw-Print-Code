@@ -99,17 +99,10 @@ def login():
 
 @app.route('/calculate_intake', methods=['GET'])
 def calculate_intake():
-    if request.json:
-        try:
-            food_goal = users[newUser][food_goal]
-            water_goal = users[newUser][water_goal]
-            message = (f"Your furry friend should consume {food_goal:.2f} grams of food and "
-                       f"{water_goal:.2f} mL of water everyday to stay healthy and meet your goals!")
-            return jsonify(message=message), 200
-        except Exception as e:
-            return jsonify(error=str(e)), 400
-
-    return jsonify(error="No data provided"), 400
+        foodGoal = users[newUser]['food_goal']
+        waterGoal = users[newUser]['water_goal']
+        message = (f"Your furry friend should consume {foodGoal:.2f} grams of food and {waterGoal:.2f} mL of water everyday to stay healthy and meet your goals!")
+        return jsonify(message=message), 200
 
 # Function to read and parse data_log.csv
 def read_csv_data():

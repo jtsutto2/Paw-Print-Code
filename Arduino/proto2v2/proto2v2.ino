@@ -114,12 +114,12 @@ void printScale (float value) {
 
 // Checks if food was eaten and updates monitors
 void foodOperations(void) {
-    if (didPetEat(tempFood, foodReading)) foodUpdate(tempFood - foodReading); // If there is a decrease in scale weight (food was eaten), make necessary updates
+    if (didPetEat(tempFood, foodReading)) foodUpdate((tempFood - foodReading)); // If there is a decrease in scale weight (food was eaten), make necessary updates
 }
 
 // Checks if food was eaten and updates monitors
 void waterOperations(void) {
-    if (didPetDrink(tempWater, waterReading)) waterUpdate(tempWater - waterReading); // If there is a decrease in scale weight (food was eaten), make necessary updates
+    if (didPetDrink(tempWater, waterReading)) waterUpdate((tempWater - waterReading)); // If there is a decrease in scale weight (food was eaten), make necessary updates
 }
 
 // Did the pet eat? Only returns true for significant scale changes

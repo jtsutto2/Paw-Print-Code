@@ -20,7 +20,7 @@ CORS(app)
 
 # Global dictionary to store user data
 users = {}
-newUser = ''
+newUser = None
 
 # Variables to store user input data
 user_data = {
@@ -42,6 +42,7 @@ def get_processed_data():
 @app.route('/register', methods=['POST'])
 def register():
     if request.form:
+        global newUser
         newUser = request.form.get('username')
         username = request.form.get('username')
         password = request.form.get('password')  # Remember, storing passwords like this is not secure

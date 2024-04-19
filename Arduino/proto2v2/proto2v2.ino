@@ -90,7 +90,7 @@ void loop() {
 // Runs the motors to dispense food
 void dispenseFood(void) {
     dispenseCount++;
-    myservo.write(180);       // Set servo to half-speed, counterclockwise
+    myservo.write(135);       // Set servo to half-speed, counterclockwise
     delay(2000);              // Run for 2 seconds
     myservo.write(90);        // Stop servo
 }

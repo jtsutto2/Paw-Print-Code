@@ -400,14 +400,14 @@ function resetLogin() {
 ///////////////////// DIETARY FUNCTIONS ///////////////////////////
 function updateDietRecommendations() {
     fetch('http://127.0.0.1:5000/calculate_intake', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'  // Ensures that the content type is application/json
-        }
+        method: 'GET'
     })
-        // No body is included if no specific data needs to be sent
- 
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok'); // This will handle HTTP errors more explicitly
+        }
+        return response.json(); // Parse JSON only if the response was successful
+    })
     .then(data => {
         if (data.message) {
             document.getElementById('dietAdvice').textContent = data.message;

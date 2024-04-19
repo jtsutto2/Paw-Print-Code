@@ -20,7 +20,7 @@ CORS(app)
 
 # Global dictionary to store user data
 users = {}
-global newUser
+newUser = ''
 
 # Variables to store user input data
 user_data = {

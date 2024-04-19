@@ -129,6 +129,7 @@
         <label for="authPassword">Password:</label>
         <input type="password" id="authPassword" name="authPassword"><br><br>
         <button type="button" onclick="authenticateUser()">Login</button>
+        <button type="reset" onclick="resetLogin()">Reset</button>
     </div>
     <div id="chartContainer" style="display:none;">
         <!-- Chart will be rendered here -->
@@ -155,7 +156,7 @@
         <label for="petTargetWeight">Pet Target Weight:</label>
         <input type="text" id="petTargetWeight" name="petTargetWeight"><br><br>
         <!-- Include other input fields for pet information -->
-        <button type="submit" onclick="registerUser();alert('Thank you for registering with Paw Print!')">Submit</button>
+        <button type="submit">Submit</button>
         <button type="reset" onclick="resetForm()">Reset</button>
     </form>
 </div>
@@ -334,7 +335,7 @@ function authenticateUser() {
 }
 
 function resetLogin() {
-    document.getElementById('autUsername').value = '';
+    document.getElementById('authUsername').value = '';
     document.getElementById('authPassword').value = '';
 }
     

@@ -334,6 +334,8 @@ function registerUser() {
         console.error('Registration failed due to:', error);
         alert('Registration failed due to: ' + error.message); // Display the error message to the user
     });
+
+    updateDietRecommendations()
 }
 
 function resetRegister() {
@@ -414,9 +416,6 @@ function updateDietRecommendations() {
         console.error('Error:', error);
     });
 }
-
-// Call updateDietRecommendations every 2 seconds
-setInterval(updateDietRecommendations, 2000);
     
     function validateShippingAddress() {
     const fullName = document.getElementById('fullName').value.trim();

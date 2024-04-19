@@ -1,7 +1,7 @@
 import datetime
 import matplotlib as mp
 
-def main():
+def calculation():
   dietfactor = targetWeight/petWeight #returns correction factor in diet relative to target weight
   #if targetWeight < petWeight then dietFactor < 1 to indicate less food
 

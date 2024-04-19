@@ -1,5 +1,14 @@
 from flask import Flask, request, jsonify, render_template
 import csv
+import sys
+import os
+
+# Expand the '~' to the full path of the home directory
+module_path = os.path.expanduser('~/Documents/GitHub/Paw-Print-Code/modules')
+sys.path.append(module_path)
+
+from calculation_module import dailyGoal
+
 # Handling CORS in Flask
 from flask_cors import CORS
 
@@ -38,12 +47,16 @@ def register():
         pet_current_weight = request.form.get('petCurrentWeight')
         pet_target_weight = request.form.get('petTargetWeight')
 
+        food_goal, water_goal = dailyGoal(pet_current_weight, pet_target_weight)
+
         # Store user data
         users[username] = {
             'password': password,
             'pet_name': pet_name,
             'pet_current_weight': pet_current_weight,
-            'pet_target_weight': pet_target_weight
+            'pet_target_weight': pet_target_weight,
+            'food_goal': food_goal,
+            'water_goal': water_goal
         }
 
         print("Received registration data:")
@@ -52,6 +65,10 @@ def register():
         print("Pet Name:", pet_name)
         print("Pet Current Weight:", pet_current_weight)
         print("Pet Target Weight:", pet_target_weight)
+
+        print("Calculated goal data:")
+        print("Daily Food Intake:", food_goal)
+        print("Daily Water Intake:", water_goal)
 
         print("Sending response with 200 status")
 

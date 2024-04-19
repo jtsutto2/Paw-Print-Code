@@ -97,7 +97,7 @@ def login():
     else:
         return jsonify({'error': 'Invalid username or password'}), 401
 
-@app.route('/calculate_intake', methods=['POST'])
+@app.route('/calculate_intake', methods=['GET'])
 def calculate_intake():
     if request.json:
         try:

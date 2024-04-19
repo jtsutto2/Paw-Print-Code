@@ -394,6 +394,29 @@ function resetLogin() {
     document.getElementById('authUsername').value = '';
     document.getElementById('authPassword').value = '';
 }
+
+///////////////////// DIETARY FUNCTIONS ///////////////////////////
+function updateDietRecommendations() {
+    fetch('http://127.0.0.1:5000/calculate_intake', {
+        method: 'POST',
+        // No body is included if no specific data needs to be sent
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            document.getElementById('dietAdvice').textContent = data.message;
+        } else {
+            document.getElementById('dietAdvice').textContent = 'Error fetching data.';
+        }
+    })
+    .catch(error => {
+        document.getElementById('dietAdvice').textContent = 'Network or server error.';
+        console.error('Error:', error);
+    });
+}
+
+// Call updateDietRecommendations every 2 seconds
+setInterval(updateDietRecommendations, 2000);
     
     function validateShippingAddress() {
     const fullName = document.getElementById('fullName').value.trim();

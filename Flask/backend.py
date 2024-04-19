@@ -1,10 +1,13 @@
 from flask import Flask, request, jsonify, render_template
 import csv
+# Handling CORS in Flask
+from flask_cors import CORS
 
 # Assuming you have a separate module for specific calculations
 #import calculation_module
 
 app = Flask(__name__)
+CORS(app)
 
 # Global dictionary to store user data
 users = {}
@@ -63,6 +66,8 @@ def register():
         print("Pet Current Weight:", pet_current_weight)
         print("Pet Target Weight:", pet_target_weight)
 
+        print("Sending response with 200 status")
+
         return jsonify({
             'username': username,
             'password': password,
@@ -81,6 +86,7 @@ def login():
 
     # Check if username exists and password matches
     if username in users and users[username]['password'] == password:
+        print("Sending response with 200 status")
         return jsonify({'message': 'Login successful'}), 200
     else:
         return jsonify({'error': 'Invalid username or password'}), 401
@@ -101,4 +107,4 @@ def read_csv_data():
 # This could include functions for processing data, performing calculations based on user inputs and CSV data, etc.
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, threaded=True, host='0.0.0.0', port=5000)

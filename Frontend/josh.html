@@ -4,12 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
     <title>Paw Print</title>
     <!-- Include necessary CSS files here -->
     <style>
         body {
-            font-family: 'Lato', Times, serif;
-            background-color: #faeac8;
+            font-family: 'Roboto', Times, serif;
+            background-color: #e6ccd2;
             margin: 0;
             padding: 0;
 	    padding-top: 120px; /* Adjust according to header height (100px) plus extra padding */
@@ -17,10 +19,10 @@
         
         /* Style for the header */
         header {
-            background-color: #086680;
+            background-color: #800020;
 	    color: #ffffff;
 	    position: fixed;
-	    font-family: 'Lato', Times, serif;
+	    font-family: 'Roboto', Times, serif;
 	    width: 100%; /* Set width to 100% */
             margin: 0; /* Remove default margin */
 	    padding: 10;
@@ -55,8 +57,8 @@
             display: none;
             padding: 20px;
             margin-top: 20px;
-            font-family: 'Lato', Times, serif;
-            background-color: #f9eac8;
+            font-family: 'Roboto', Times, serif;
+            background-color: #e6ccd2;
         }
 
         .active {
@@ -91,7 +93,7 @@
         }
 
 	footer {
-            background-color: #563C2F; /* Set background color */
+            background-color: #800020; /* Set background color */
             color: #ffffff; /* Set text color */
             padding: 20px 0; /* Added padding top and bottom */
             text-align: center;
@@ -295,7 +297,6 @@ function resetRegister() {
 document.getElementById('authForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent the default form submission behavior
     authenticateUser();
-    resetLogin();
 });
 
 function authenticateUser() {
@@ -332,6 +333,8 @@ function authenticateUser() {
         console.error('Login failed:', error);
         alert('Login failed. Please try again. ' + error.message); // Provide error message for better debugging feedback
     });
+
+    resetLogin();
 }
 
 function resetLogin() {

@@ -294,17 +294,9 @@ function registerUser() {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error('Network response was not ok: ' + response.statusText);
         }
-        console.log("Raw response:", response);
-        return response.json();
-    })
-    .then(text => {
-    try {
-        return JSON.parse(text);  // Then try to parse it as JSON
-    } catch (e) {
-        throw new Error('Failed to parse JSON: ' + text);  // Handle parsing errors explicitly
-    }
+        return response.json(); // This returns a promise that resolves with the result of parsing the body text as JSON
     })
     .then(data => {
         console.log('Received data:', data);
@@ -312,8 +304,8 @@ function registerUser() {
         alert('Thank you for registering with Paw Print!');
     })
     .catch(error => {
-        console.error('Registration failed due to: ', error);
-        alert('Registration failed due to: ' + error.message);
+        console.error('Registration failed due to:', error);
+        //alert('Registration failed due to: ' + error.message); // Display the error message to the user
     });
 }
 
@@ -352,20 +344,19 @@ function authenticateUser() {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Server responded with a non-200 status: ' + response.status);
+            throw new Error('Server responded with a non-200 status: ' + response.statusText);
         }
-        console.log("Raw response:", response);
-        return response.json();
+        return response.json(); // Parse the JSON in the response
     })
     .then(data => {
         console.log('Login successful:', data);
         alert('You are logged in!'); // Alert the user upon successful login
         // Additional actions based on response, like showing the chart
-        // document.getElementById('chartContainer').style.display = 'block';
+        document.getElementById('chartContainer').style.display = 'block';
     })
     .catch(error => {
-        console.error('Login failed due to:', error.message);
-        alert('Login failed. Please try again.' + error.message); // Alert the user upon failure
+        console.error('Login failed:', error);
+        //alert('Login failed. Please try again. ' + error.message); // Provide error message for better debugging feedback
     });
 }
     

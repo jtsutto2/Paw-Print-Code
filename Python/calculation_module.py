@@ -1,30 +1,35 @@
-import datetime
-import matplotlib as mp
+from datetime import datetime
+import time
 
 def calculation():
-  dietfactor = targetWeight/petWeight #returns correction factor in diet relative to target weight
+  petName = 'Kirby'
+  targetWeight = 80
+  petWeight = 70;
+  dietFactor = targetWeight/petWeight #returns correction factor in diet relative to target weight
   #if targetWeight < petWeight then dietFactor < 1 to indicate less food
 
-  foodGoal = petWeight * dietFactor * 27 #daily food goal adjusted for dietary needs
-  print(petName + " needs: " + foodGoal + "g of food")
-  waterGoal = petWeight * 30 #water should be based on current weight not target 
-  print(petName + " needs: " + waterGoal + "mL of water")
+  foodGoal = petWeight * dietFactor * 27  # daily food goal adjusted for dietary needs
+  print(petName + " needs: " + str(foodGoal) + "g of food")
+  waterGoal = petWeight * 30  # water should be based on current weight not target
+  print(petName + " needs: " + str(waterGoal) + "mL of water")
+  
+  foodEaten = 0
+  waterDrank = 0
 
   while True:
-    if consumptionTrigger % 1000 == 0: #makes this run less often
-      consumptionProgress()
-    else:
-      consumptionTrigger += 1 #increase count
-  
-  return
+      consumptionProgress(foodEaten, waterDrank, foodGoal, waterGoal, petName)
+      foodEaten += 10
+      waterDrank += 10
+      time.sleep(5)
 
-def consumptionProgress():
+
+def consumptionProgress(foodEaten, waterDrank, foodGoal, waterGoal, petName):
   foodProgress = (foodEaten / foodGoal) * 100; #create percent of goal
   waterProgress = (waterDrank / waterGoal) * 100;
-  print(petName + " has eaten " + foodProgress + "% of their daily food goal as of")
-  print current_time()
-  print(petName + " has drank " + waterProgress + "% of their daily water goal as of")
-  print current_time()
+  print(petName + " has eaten {:.2f}% of their daily food goal as of".format(foodProgress))
+  print(current_time())
+  print(petName + " has drank {:.2f}% of their daily water goal as of".format(waterProgress))
+  print(current_time())
 
   goalDict1 = { #creates a dictionary with the date: true/false format
     'Date MM/DD/YYYY': 'Goal met? (true/false)'
@@ -56,3 +61,5 @@ def current_time():
 
 def current_date():
   return datetime.now().strftime('%m-%d-%Y') #creates string with MM/DD/YYYY
+  
+calculation()

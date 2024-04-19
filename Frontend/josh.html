@@ -177,9 +177,8 @@
                 <canvas id="myChart"></canvas>
             </div>
         </div>
-        <div class="api-data-container">
+        <div id="apiDataContainer" class="api-data-container" style="display:none;">
             <!-- Div for displaying data from Flask API -->
-		<p>Test string for Fares</p>
             <div id="apiData"></div>
         </div>
     </div>
@@ -378,8 +377,9 @@ function authenticateUser() {
     .then(data => {
         console.log('Login successful:', data);
         alert('You are logged in!'); // Alert the user upon successful login
-        // Additional actions based on response, like showing the chart
+        // Additional actions based on response, like showing the chart and API data container
         document.getElementById('chartContainer').style.display = 'block';
+        document.getElementById('apiDataContainer').style.display = 'block';
     })
     .catch(error => {
         console.error('Login failed:', error);

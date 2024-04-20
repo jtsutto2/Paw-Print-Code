@@ -144,9 +144,6 @@ def read_csv_data():
                     'foodEaten': float(foodEaten),
                     'waterDrank': float(waterDrank)
                 })
-        print(seconds_since_first)
-        print(foodEaten)
-        print(waterDrank)
         
     except FileNotFoundError:
         print("Error: File not found. Please check the file path.")

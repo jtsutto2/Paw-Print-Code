@@ -16,8 +16,8 @@
 //pins:
 const int HX711_dout_1 = 4; //mcu > HX711 no 1 dout pin
 const int HX711_sck_1 = 5; //mcu > HX711 no 1 sck pin
-const int HX711_dout_2 = 6; //mcu > HX711 no 2 dout pin
-const int HX711_sck_2 = 7; //mcu > HX711 no 2 sck pin
+const int HX711_dout_2 = 8; //mcu > HX711 no 2 dout pin
+const int HX711_sck_2 = 9; //mcu > HX711 no 2 sck pin
 
 //HX711 constructor (dout pin, sck pin)
 HX711_ADC LoadCell_1(HX711_dout_1, HX711_sck_1); //HX711 1

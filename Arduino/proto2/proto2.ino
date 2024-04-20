@@ -206,8 +206,8 @@ void setupLoadCells(void) {
     float calibrationValue_1; // calibration value load cell 1
     float calibrationValue_2; // calibration value load cell 2
 
-    calibrationValue_1 = 195.8; // uncomment this if you want to set this value in the sketch
-    calibrationValue_2 = 17.05; // uncomment this if you want to set this value in the sketch
+    calibrationValue_1 = 193.89; // uncomment this if you want to set this value in the sketch
+    calibrationValue_2 = 8.87; // uncomment this if you want to set this value in the sketch
     #if defined(ESP8266) || defined(ESP32)
     EEPROM.begin(512); // uncomment this if you use ESP8266 and want to fetch the value from eeprom
     #endif

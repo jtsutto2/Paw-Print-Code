@@ -30,42 +30,40 @@ void loop() {
 
     // The following reads the scales in cycles and uses that information to track dietary trends
     if (currentTime() >= readingCooldown) {          // Readings will only run every 200ms
-     // Get a current reading of food and water scales
-        readFoodScale(foodReading);
-        readWaterScale(waterReading);
-
+        LoadCell_1.update();
+        LoadCell_2.update();    
         // Debugging
         Serial.print("Your current food: ");
-        Serial.println(foodReading);
+        Serial.println(LoadCell_1.getData());
 
         Serial.print("Your current water: ");
-        Serial.println(waterReading);
+        Serial.println(LoadCell_2.getData());
 
-        Serial.print("Your tempFood: ");
-        Serial.println(tempFood);
+        //Serial.print("Your tempFood: ");
+        //Serial.println(tempFood);
 
-        Serial.print("Your tempWater: ");
-        Serial.println(tempWater);
-        Serial.println("***************************");
+       // Serial.print("Your tempWater: ");
+        //Serial.println(tempWater);
+        ///Serial.println("***************************");
 
         // Check if food and water was consumed and update if so
         foodOperations();                            // Check and update if pet ate
         waterOperations();                           // Check and update if pet drank
 
         // Debugging
-        Serial.print("Your foodEaten: ");
-        Serial.println(foodEaten);
+        //Serial.print("Your foodEaten: ");
+        //Serial.println(foodEaten);
 
-        Serial.print("Your waterDrank: ");
-        Serial.println(waterDrank);
-        Serial.println("***************************");
+        //Serial.print("Your waterDrank: ");
+        //Serial.println(waterDrank);
+        //Serial.println("***************************");
 
         // Set new temp values as being current values for future comparison
         tempFood = foodReading;
         tempWater = waterReading;
 
         // Update cooldown
-        readingCooldown = cooldown(1);             // Reset cooldown after each reading
+        readingCooldown = cooldown(2);             // Reset cooldown after each reading
     }
 
     // The following resets data captures after the day (24 hours) is over
@@ -75,16 +73,16 @@ void loop() {
     }
 
     // The following will frequently print out pet's daily consumption progress
-    /*if (currentTime() >= consumptionCooldown) {
+    if (currentTime() >= consumptionCooldown) {
         
-        Serial.print(dispenseCount);
+        /*Serial.print(dispenseCount);
         Serial.print(",");
         Serial.print(foodEaten);
         Serial.print(",");
-        Serial.println(waterDrank);
+        Serial.println(waterDrank);*/
 
-        consumptionCooldown = cooldown(2);
-    }*/
+        consumptionCooldown = cooldown(5);
+    }
 }
 
 // Runs the motors to dispense food
@@ -211,8 +209,8 @@ void setupLoadCells(void) {
     float calibrationValue_1; // calibration value load cell 1
     float calibrationValue_2; // calibration value load cell 2
 
-    calibrationValue_1 = 195.8; // uncomment this if you want to set this value in the sketch
-    calibrationValue_2 = 17.05; // uncomment this if you want to set this value in the sketch
+    calibrationValue_2 = 8.87; // uncomment this if you want to set this value in the sketch
+    calibrationValue_1 = 193.89; // uncomment this if you want to set this value in the sketch
     #if defined(ESP8266) || defined(ESP32)
     EEPROM.begin(512); // uncomment this if you use ESP8266 and want to fetch the value from eeprom
     #endif
@@ -237,7 +235,7 @@ void setupLoadCells(void) {
     if (LoadCell_2.getTareTimeoutFlag()) {
         //Serial.println("Timeout, check MCU>HX711 no.2 wiring and pin designations");
     }
-    LoadCell_1.setCalFactor(189.82); // user set calibration value (float)
+    LoadCell_1.setCalFactor(calibrationValue_1); // user set calibration value (float)
     LoadCell_2.setCalFactor(calibrationValue_2); // user set calibration value (float)
     //Serial.println("Startup is complete");
 }

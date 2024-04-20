@@ -113,34 +113,42 @@ def calculate_intake():
         message = (f"Your furry friend should consume {foodGoal:.2f} grams of food and {waterGoal:.2f} mL of water everyday to stay healthy and meet your goals!")
         return jsonify(message=message), 200
 
-# Function to read and parse data_log.csv
 def read_csv_data():
     csv_data = []
     csv_file_path = '/home/pawprint/Documents/csv_output/data_log.csv'
-    initial_time = None  # To store the first timestamp
 
-    with open(csv_file_path, mode='r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            # Parse the current timestamp
-            current_time = datetime.strptime(row['Time (EST)'], '%H:%M:%S')
+    try:
+        with open(csv_file_path, mode='r') as csv_file:
+            csv_reader = csv.DictReader(csv_file)
+            initial_time = None  # To store the first timestamp
 
-            if initial_time is None:
-                # Set the first timestamp
-                initial_time = current_time
-                print('First timestamp: ', initial_time) #debug
-                base_seconds = initial_time.hour * 3600 + initial_time.minute * 60 + initial_time.second
+            for row in csv_reader:
+                # Parse the current timestamp
+                current_time = datetime.strptime(row['Time (EST)'], '%H:%M:%S')
 
-            # Calculate the number of seconds from the first timestamp
-            current_seconds = current_time.hour * 3600 + current_time.minute * 60 + current_time.second
-            seconds_since_first = current_seconds - base_seconds
-            print('T value is: ', seconds_since_first) #debug
+                if initial_time is None:
+                    initial_time = current_time
+                    base_seconds = initial_time.hour * 3600 + initial_time.minute * 60 + initial_time.second
 
-            csv_data.append({
-                'timeInSeconds': int(seconds_since_first),  # Explicitly cast to int to ensure type consistency
-                'foodEaten': float(row['foodEaten']),
-                'waterDrank': float(row['waterDrank'])
-            })
+                current_seconds = current_time.hour * 3600 + current_time.minute * 60 + current_time.second
+                seconds_since_first = current_seconds - base_seconds
+
+                csv_data.append({
+                    'timeInSeconds': int(seconds_since_first),
+                    'foodEaten': float(row['foodEaten']),
+                    'waterDrank': float(row['waterDrank'])
+                })
+
+    except FileNotFoundError:
+        print("Error: File not found. Please check the file path.")
+        return None
+    except PermissionError:
+        print("Error: Permission denied when trying to read the file.")
+        return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
     return csv_data
 
 # Route for the main page and handling user input form

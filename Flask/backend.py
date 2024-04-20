@@ -134,10 +134,15 @@ def read_csv_data():
                 current_seconds = current_time.hour * 3600 + current_time.minute * 60 + current_time.second
                 seconds_since_first = current_seconds - base_seconds
 
+                 # Update here to fetch from the correct columns
+                foodEaten = float(row['Food Eaten (g)'])  # Access food eaten in grams
+                waterDrank = float(row['Water Drank (mL)'])  # Access water drank in milliliters
+
+
                 csv_data.append({
                     'timeInSeconds': int(seconds_since_first),
-                    'foodEaten': float(row['foodEaten']),
-                    'waterDrank': float(row['waterDrank'])
+                    'foodEaten': float(foodEaten),
+                    'waterDrank': float(waterDrank)
                 })
 
     except FileNotFoundError:

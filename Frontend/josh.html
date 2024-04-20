@@ -534,7 +534,7 @@ function updateDietRecommendations() {
             const foodData = petData.map(entry => entry.foodEaten);
             const waterData = petData.map(entry => entry.waterDrank);
 
-            const ctx = document.getElementById('petDataChart').getContext('2d');
+            const ctx = document.getElementById('myChart').getContext('2d');
             if (window.petDataChart) {
                 // Update chart if it already exists
                 window.petDataChart.data.labels = timesInSeconds;
